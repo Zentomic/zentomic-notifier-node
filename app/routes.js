@@ -1,3 +1,7 @@
+
+// load up the user model
+var User       = require('../app/models/user');
+
 module.exports = function(app, passport) {
 
     // =====================================
@@ -94,6 +98,47 @@ module.exports = function(app, passport) {
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
+    
+    //---------------------------------------------------------------------------------------------------------------------------
+    //  process for login 
+   
+     //  process for login local
+    app.post('/login-notifier', passport.authenticate('local-login', {
+                                successRedirect : '/json_login_success', // redirect to the secure profile section
+                                failureRedirect : '/json_login_fail', // redirect back to the signup page if there is an error
+                                failureFlash : true // allow flash messages
+                }) 
+            );    
+        
+    app.get('/login-google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+        // the callback after google has authenticated the user
+    app.get('/login-google/callback',
+                passport.authenticate('google', {
+                        successRedirect : '/json_login_success',
+                        failureRedirect : '/json_login_fail'
+                }));
+    
+    //------------------------------------------------------------------------------------------------------------------------------
+    app.get('/json_login_success', function(req, res) {
+        console.log(req.flash('loginMessage'));
+        var message = req.flash('loginMessage').toString();
+        
+        var rs= {"user": req.user, 'login':true, 'message':message};
+        res.json(rs);
+    });
+
+    app.get('/json_login_fail', function(req, res) {
+        var message = req.flash('loginMessage').toString();
+        console.log(message);
+        var rs= {"user": req.user, 'login':false, 'message':message};
+        res.json(rs);
+    });
+
+    
+    
+  
+    
 };
 
 // route middleware to make sure a user is logged in
