@@ -100,19 +100,20 @@ module.exports = function(app, passport) {
     }));
     
     //---------------------------------------------------------------------------------------------------------------------------
-    //  process for login 
+    //  process for login Code by Tony
+    //---------------------------------------------------------------------------------------------------------------------------
    
      //  process for login local
-    app.post('/login-notifier', passport.authenticate('local-login', {
+    app.post('/login-local', passport.authenticate('local-login', {
                                 successRedirect : '/json_login_success', // redirect to the secure profile section
                                 failureRedirect : '/json_login_fail', // redirect back to the signup page if there is an error
                                 failureFlash : true // allow flash messages
-                }) 
-            );    
+                })  );    
         
-    app.get('/login-google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+    app.get('/login-google', passport.authenticate('google', { scope : ['profile', 'email'] }) );
 
-        // the callback after google has authenticated the user
+    // the callback after google has authenticated the user
+    // callback must be register at google console API
     app.get('/login-google/callback',
                 passport.authenticate('google', {
                         successRedirect : '/json_login_success',
@@ -120,6 +121,7 @@ module.exports = function(app, passport) {
                 }));
     
     //------------------------------------------------------------------------------------------------------------------------------
+    // return sucess login json for auth
     app.get('/json_login_success', function(req, res) {
         console.log(req.flash('loginMessage'));
         var message = req.flash('loginMessage').toString();
@@ -127,17 +129,15 @@ module.exports = function(app, passport) {
         var rs= {"user": req.user, 'login':true, 'message':message};
         res.json(rs);
     });
-
+    // return fail login json for auty
     app.get('/json_login_fail', function(req, res) {
         var message = req.flash('loginMessage').toString();
         console.log(message);
         var rs= {"user": req.user, 'login':false, 'message':message};
         res.json(rs);
     });
-
     
-    
-  
+   //-------------------------------------------------------------------------------------------------------------------------------
     
 };
 
