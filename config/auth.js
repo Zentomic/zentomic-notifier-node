@@ -13,8 +13,8 @@ module.exports = {
     },
 
     'googleAuth' : {
-        'clientID'      : '533949658717-bnsj9fg3ncfvjt5o0lcdg0qocjikcmdb.apps.googleusercontent.com',
-        'clientSecret'  : '3kPdoay8LaA0ynYYG1wmcccb',
+        'clientID'      : '882968991399-734ba7eetulit0q7hruims4c17jpoqk1.apps.googleusercontent.com',
+        'clientSecret'  : 'aSPj2xTItBW9_mZvEYusu180',
         'callbackURL'   : 'https://zentomic-notifier-node.herokuapp.com/login-google/callback'
     }
 
