@@ -104,7 +104,7 @@ module.exports = function(app, passport) {
     //---------------------------------------------------------------------------------------------------------------------------
    
      //  process for login local
-    app.post('/login-local', passport.authenticate('local-login', {
+    app.get('/login-local', passport.authenticate('local-login', {
                                 successRedirect : '/json_login_success', // redirect to the secure profile section
                                 failureRedirect : '/json_login_fail', // redirect back to the signup page if there is an error
                                 failureFlash : true // allow flash messages
