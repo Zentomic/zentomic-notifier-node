@@ -16,7 +16,11 @@ var session      = require('express-session');
 
 var configDB = require('./config/database.js');
 
-// configuration ===============================================================
+//--------------------------------------------
+var cors = require('cors');             // this include for CORS issues
+
+// ==============================================================================================================================
+// ==============================================================================================================================
 mongoose.connect(configDB.url); // connect to our database
 
  require('./config/passport')(passport); // pass passport for configuration
@@ -34,9 +38,26 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+// CORS -----------------------------------------------------------------------
+var originsWhitelist = [
+  'http://localhost:4200',              //Front end URL for development time.
+   'https://zentomic-webadmin.herokuapp.com'     // Front end URL for deploy time, such as may be on heroku.
+];
+var corsOptions = {
+  origin: function(origin, callback){
+        var isWhitelisted = originsWhitelist.indexOf(origin) !== -1;
+        callback(null, isWhitelisted);
+  },
+  credentials:true
+}
+//here is the magic
+app.use(cors(corsOptions));
+
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
 app.listen(port);
 console.log('The magic happens on port ' + port);
+//----------------------------
+
