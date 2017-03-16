@@ -126,7 +126,8 @@ module.exports = function(app, passport) {
         console.log(req.flash('loginMessage'));
         var message = req.flash('loginMessage').toString();
         
-        var rs= {"user": req.user, 'login':true, 'message':message};
+        var rs= {"user": JSON.stringify(req.user), 'login':true, 'message':message};
+     //   var rs= {"user": req.user, 'login':true, 'message':message};
         res.json(rs);
     });
     // return fail login json for auty
