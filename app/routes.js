@@ -1,6 +1,9 @@
 
 // load up the user model
 var User       = require('../app/models/user');
+var SMS        = require('../app/twilioClient');
+var ReqParam   = require('../config/ReqParam');
+
 
 module.exports = function(app, passport) {
 
@@ -63,7 +66,7 @@ module.exports = function(app, passport) {
     app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
     // the callback after google has authenticated the user
-    app.get('/auth/google/callback',
+    app.post('/auth/google/callback',
             passport.authenticate('google', {
                     successRedirect : '/profile',
                     failureRedirect : '/'
@@ -103,6 +106,56 @@ module.exports = function(app, passport) {
     //  process for login Code by Tony
     //---------------------------------------------------------------------------------------------------------------------------
    
+    // local signup
+    app.get('/signup-local', function(req, res){
+        
+        var result = {err: null, data: null};
+        
+        var email = ReqParam(req, 'email');
+        var password = ReqParam(req, 'password');
+        var fullname = ReqParam(req, 'fullname');
+        
+        User.findOne(
+        { 'local.email' : email }, 
+        function(err, user) {
+            //custom code here
+                 // if there are any errors, return the error
+            if (!err)
+            {
+               // check to see if theres already a user with that email
+                if (user) {
+                    result.data = "email already registered";
+                } else {
+
+                // if there is no user with that email
+                // create the user
+                var newUser            = new User();
+
+                // set the user's local credentials
+                newUser.local.email    = email;                       
+                newUser.local.fullname    = fullname;             
+                newUser.local.password = newUser.generateHash(password);
+
+                // save the user
+                newUser.save(function(err) {
+                    if (err) throw err;
+                    result.data = newUser;
+                });
+                }
+            }
+            else result.err = err;
+            
+            res.send(result);
+           // responed;
+            }
+            
+            
+        );
+        
+      
+        
+    });
+    
      //  process for login local
     app.get('/login-local', passport.authenticate('local-login', {
                                 successRedirect : '/json_login_success', // redirect to the secure profile section
@@ -110,12 +163,18 @@ module.exports = function(app, passport) {
                                 failureFlash : true // allow flash messages
                 })  );    
         
-    app.get('/login-google', passport.authenticate('google', { scope : ['profile', 'email'] }) );
+    //app.get('/login-google', passport.authenticate('google', { scope : ['profile', 'email'] }) );
 
+    app.get('/auth/google/callback', passport.authenticate('google'), function(req, res) {
+        console.log(" router calbacl");
+        // Return user back to client
+        res.send(req.user);
+    });
+    
+    
     // the callback after google has authenticated the user
     // callback must be register at google console API
-    app.get('/login-google/callback',
-                passport.authenticate('google', {
+    app.get('/login-google/callback',  passport.authenticate('google', {
                         successRedirect : '/json_login_success',
                         failureRedirect : '/json_login_fail'
                 }));
@@ -139,7 +198,29 @@ module.exports = function(app, passport) {
     });
     
    //-------------------------------------------------------------------------------------------------------------------------------
-    
+    //==================================================This is the twilio section =================================================
+    // this purpose for this is testing twilio on node system
+    app.get('/SMS', function(req, res){
+        
+
+        
+        var tofone = ReqParam(req, 'tofone');
+        var message = ReqParam(req, 'message');
+        
+        
+        if(tofone)
+        {
+            SMS.sendSms(tofone, message, function(err, data){
+                
+                
+                var resdata = {err, data};
+                res.send(resdata); // for responding on web
+            });
+            //----------------------------
+           
+        }
+        
+    });
 };
 
 // route middleware to make sure a user is logged in

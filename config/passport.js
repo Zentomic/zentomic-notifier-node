@@ -3,7 +3,8 @@
 // load all the things we need
 var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+//var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var GooglePlusStrategy = require('passport-google-plus');
 
 // load up the user model
 var User       = require('../app/models/user');
@@ -66,7 +67,7 @@ module.exports = function(passport) {
     passport.use('local-signup', new LocalStrategy({
         // by default, local strategy uses username and password, we will override with email
         usernameField : 'email',
-        passwordField : 'password',
+        passwordField : 'password',       
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) {
@@ -92,7 +93,7 @@ module.exports = function(passport) {
                 var newUser            = new User();
 
                 // set the user's local credentials
-                newUser.local.email    = email;
+                newUser.local.email    = email;                
                 newUser.local.password = newUser.generateHash(password);
 
                 // save the user
@@ -170,7 +171,7 @@ module.exports = function(passport) {
     // =========================================================================
     // GOOGLE ==================================================================
     // =========================================================================
-    passport.use(new GoogleStrategy({
+  /*  passport.use(new GoogleStrategy({
 
         clientID        : configAuth.googleAuth.clientID,
         clientSecret    : configAuth.googleAuth.clientSecret,
@@ -214,4 +215,15 @@ module.exports = function(passport) {
 
     }));
 
+    */
+    // google plus strategy
+    passport.use(new GooglePlusStrategy({
+        clientID        : configAuth.googleAuth.clientID,
+        clientSecret    : configAuth.googleAuth.clientSecret
+      },
+      function(tokens, profile, done) {
+        // Create or update user, call done() when complete...
+        done(null, profile, tokens);
+      }
+));
 };

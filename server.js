@@ -19,16 +19,24 @@ var configDB = require('./config/database.js');
 //--------------------------------------------
 var cors = require('cors');             // this include for CORS issues
 
+
+//------------------TWILLIO--------------------------------------------
+//------------------TWILLIO--------------------------------------------
+var config = require('./config/config.js');
+var twilioNotifications = require('./app/twilioNotifications');
+
+
 // ==============================================================================================================================
 // ==============================================================================================================================
 mongoose.connect(configDB.url); // connect to our database
 
- require('./config/passport')(passport); // pass passport for configuration
+require('./config/passport')(passport); // pass passport for configuration
+
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser()); // get information from html forms
+app.use(bodyParser()); // get rinformation from html forms
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 
@@ -52,6 +60,10 @@ var corsOptions = {
 }
 //here is the magic
 app.use(cors(corsOptions));
+
+//===============================Twillio=======================================
+app.use(twilioNotifications.notifyOnError);
+
 
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
