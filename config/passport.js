@@ -218,7 +218,7 @@ module.exports = function(passport) {
     */
     // google plus strategy
     passport.use(new GooglePlusStrategy({
-        clientID        : configAuth.googleAuth.clientID,
+        clientId        : configAuth.googleAuth.clientID,
         clientSecret    : configAuth.googleAuth.clientSecret
       },
       function(tokens, profile, done) {
