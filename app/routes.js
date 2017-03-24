@@ -21,7 +21,7 @@ module.exports = function(app, passport) {
     app.get('/login', function(req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', { message: req.flash('loginMessage') }); 
+        res.render('login.ejs', { message: req.flash('loginMessage') });
     });
 
     // process the login form
@@ -101,22 +101,22 @@ module.exports = function(app, passport) {
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
-    
+
     //---------------------------------------------------------------------------------------------------------------------------
     //  process for login Code by Tony
     //---------------------------------------------------------------------------------------------------------------------------
-   
+
     // local signup
     app.get('/signup-local', function(req, res){
-        
+
         var result = {err: null, data: null};
-        
+
         var email = ReqParam(req, 'email');
         var password = ReqParam(req, 'password');
         var fullname = ReqParam(req, 'fullname');
-        
+
         User.findOne(
-        { 'local.email' : email }, 
+        { 'local.email' : email },
         function(err, user) {
             //custom code here
                  // if there are any errors, return the error
@@ -132,8 +132,8 @@ module.exports = function(app, passport) {
                 var newUser            = new User();
 
                 // set the user's local credentials
-                newUser.local.email    = email;                       
-                newUser.local.fullname    = fullname;             
+                newUser.local.email    = email;
+                newUser.local.fullname    = fullname;
                 newUser.local.password = newUser.generateHash(password);
 
                 // save the user
@@ -144,89 +144,117 @@ module.exports = function(app, passport) {
                 }
             }
             else result.err = err;
-            
+
             res.send(result);
            // responed;
             }
-            
-            
+
+
         );
-        
-      
-        
+
+
+
     });
-    
+
      //  process for login local
-    app.get('/login-local', passport.authenticate('local-login', {
+     // never return user data when login successful
+/*   app.get('/login-local', passport.authenticate('local-login', {
                                 successRedirect : '/json_login_success', // redirect to the secure profile section
                                 failureRedirect : '/json_login_fail', // redirect back to the signup page if there is an error
-                                failureFlash : true // allow flash messages
-                })  );    
-        
+                                failureFlash : true, // allow flash messages
+                                session: true
+                })  );
+*/
+// custom login deserialize
+app.get('/login-local', function(req, res, next) {
+  passport.authenticate('local-login', function (err, user, info) {
+    if (err) { return next(err); }
+    if (!user) { return res.redirect('/login'); }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+
+// succes login
+      console.log(req.flash('loginMessage'));
+      var message = req.flash('loginMessage').toString();
+  
+      var rs= {'login':true, 'data':user};
+
+      return res.send(rs);
+    });
+  })(req, res, next);
+});
+
+
+
+
+
+
     //app.get('/login-google', passport.authenticate('google', { scope : ['profile', 'email'] }) );
 
     app.get('/auth/google/callback', passport.authenticate('google'), function(req, res) {
         console.log(" router calbacl");
-        // Return user back to client
-        res.send(req.user);
+        var rs= {'login':true, 'data':req.user};
+        res.send(rs);
     });
-    
-    
+
+
     // the callback after google has authenticated the user
     // callback must be register at google console API
     app.get('/login-google/callback',  passport.authenticate('google', {
                         successRedirect : '/json_login_success',
                         failureRedirect : '/json_login_fail'
                 }));
-    
+
     //------------------------------------------------------------------------------------------------------------------------------
     // return sucess login json for auth
     app.get('/json_login_success', function(req, res) {
         console.log(req.flash('loginMessage'));
         var message = req.flash('loginMessage').toString();
-        
-        var rs= {"user": JSON.stringify(req.user), 'login':true, 'message':message};
-     //   var rs= {"user": req.user, 'login':true, 'message':message};
-        res.json(rs);
+        var user = req.flash('user'); // get user form req
+        var rs= {'login':true, 'data':req.user};
+
+        console.log(rs);
+
+        res.send(rs);
     });
     // return fail login json for auty
     app.get('/json_login_fail', function(req, res) {
         var message = req.flash('loginMessage').toString();
         console.log(message);
-        var rs= {"user": req.user, 'login':false, 'message':message};
-        res.json(rs);
+        var rs= {'login':false, 'data':req.user};
+        res.send(rs);
     });
-    
+
    //-------------------------------------------------------------------------------------------------------------------------------
     //==================================================This is the twilio section =================================================
     // this purpose for this is testing twilio on node system
     app.get('/SMS', function(req, res){
-        
 
-        
+
+
         var tofone = ReqParam(req, 'tofone');
         var message = ReqParam(req, 'message');
-        
-        
+
+
         if(tofone)
         {
             SMS.sendSms(tofone, message, function(err, data){
-                
-                
+
+
                 var resdata = {err, data};
                 res.send(resdata); // for responding on web
             });
             //----------------------------
-           
+
         }
-        
+
     });
 };
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
 
-    // if user is authenticated in the session, carry on 
+    // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
 

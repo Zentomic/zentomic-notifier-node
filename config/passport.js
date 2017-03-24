@@ -47,14 +47,14 @@ module.exports = function(passport) {
             // if the user is found but the password is wrong
             if (!user.validPassword(password))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
-
+            req.user = user;
             // all is well, return successful user
-            return done(null, user);
+            return  done(null, user); // create the loginMessage and save it to session as flashdata
         });
 
        //-----------------------------------------------------------------------
-      
-        
+
+
     }));
 
 
@@ -67,7 +67,7 @@ module.exports = function(passport) {
     passport.use('local-signup', new LocalStrategy({
         // by default, local strategy uses username and password, we will override with email
         usernameField : 'email',
-        passwordField : 'password',       
+        passwordField : 'password',
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) {
@@ -93,7 +93,7 @@ module.exports = function(passport) {
                 var newUser            = new User();
 
                 // set the user's local credentials
-                newUser.local.email    = email;                
+                newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password);
 
                 // save the user
@@ -104,7 +104,7 @@ module.exports = function(passport) {
                 });
             }
 
-        });    
+        });
 
         });
 
@@ -127,8 +127,8 @@ module.exports = function(passport) {
     // facebook will send back the token and profile
     function(token, refreshToken, profile, done) {
 
-        
-       
+
+
         // asynchronous
         process.nextTick(function() {
 
@@ -148,8 +148,8 @@ module.exports = function(passport) {
                     var newUser            = new User();
 
                     // set all of the facebook information in our user model
-                    newUser.facebook.id    = profile.id; // set the users facebook id                   
-                    newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
+                    newUser.facebook.id    = profile.id; // set the users facebook id
+                    newUser.facebook.token = token; // we will save the token that facebook provides to the user
                     newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
                     newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 

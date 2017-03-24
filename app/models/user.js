@@ -43,6 +43,16 @@ userSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
+// get user id
+userSchema.methods.getID = function(callback) {
+  User.FindOne(
+      { 'local.email' :  this.local.email },
+      function(err, user) {
+          //custom code here
+          if(callback) callback(err, user);
+          }
+      );
+};
 
 //-------------------------------------------------------------------------------------------
 // CRUD Section -- mapping the moongse functions
@@ -66,23 +76,23 @@ userSchema.methods.validPassword = function(password) {
 /*
 sample:
     User.FindOne(
-        { 'local.email' :  "abc@gmail.com" }, 
+        { 'local.email' :  "abc@gmail.com" },
         function(err, user) {
             //custom code here
             }
         );
-        
-        
+
+
      User.FindOne(
-        { 'facebook.email' :  "abc@gmail.com" }, 
+        { 'facebook.email' :  "abc@gmail.com" },
         function(err, user) {
             //custom code here
             }
         );
-        
+
 */
 // Update
-/* 
+/*
     User.findOneAndUpdate({'local.email':"abc@gmail.com"}, {"local.email":'cba@gmail.com'}, function(err){
         if(err) throw err;
     });
