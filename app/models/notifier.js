@@ -16,7 +16,8 @@ var notifierSchema = mongoose.Schema({
 
 // methods ======================
 
+
 //-------------------------------------------------------------------------------------------
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('tbl_Notifier', notifierSchema);
+module.exports = mongoose.model('notifier', notifierSchema);

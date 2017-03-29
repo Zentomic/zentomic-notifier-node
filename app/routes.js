@@ -1,9 +1,12 @@
 
 // load up the user model
 var User       = require('../app/models/user');
+var Notifier   = require('../app/models/notifier');
 var SMS        = require('../app/twilioClient');
 var ReqParam   = require('../config/ReqParam');
+var CoreFunc   = require('../app/core/corefunc.js');
 
+var corefunc  = new CoreFunc();
 
 module.exports = function(app, passport) {
 
@@ -166,23 +169,23 @@ module.exports = function(app, passport) {
                 })  );
 */
 // custom login deserialize
-app.get('/login-local', function(req, res, next) {
-  passport.authenticate('local-login', function (err, user, info) {
-    if (err) { return next(err); }
-    if (!user) { return res.redirect('/login'); }
-    req.logIn(user, function(err) {
-      if (err) { return next(err); }
+    app.get('/login-local', function(req, res, next) {
+          passport.authenticate('local-login', function (err, user, info) {
+          if (err) { return next(err); }
+          if (!user) { return res.redirect('/login'); }
+          req.logIn(user, function(err) {
+          if (err) { return next(err); }
 
-// succes login
-      console.log(req.flash('loginMessage'));
-      var message = req.flash('loginMessage').toString();
-  
-      var rs= {'login':true, 'data':user};
+          // succes login
+          console.log(req.flash('loginMessage'));
+          var message = req.flash('loginMessage').toString();
 
-      return res.send(rs);
+          var rs= {'login':true, 'data':user};
+
+          return res.send(rs);
+          });
+        })(req, res, next);
     });
-  })(req, res, next);
-});
 
 
 
@@ -228,27 +231,82 @@ app.get('/login-local', function(req, res, next) {
    //-------------------------------------------------------------------------------------------------------------------------------
     //==================================================This is the twilio section =================================================
     // this purpose for this is testing twilio on node system
+    app.post('/create_notifier',function(req, res){
+      console.log('create_notifier');
+      var fromuser = ReqParam(req, 'fromuser');
+      var fullname = ReqParam(req, 'fullname');
+      var fone = ReqParam(req, 'fone');
+      var email = ReqParam(req, 'email');
+      var type = ReqParam(req, 'type');
+
+
+      var $res = res;
+      corefunc.Notifier().Create(fromuser, fullname, fone, email, type, function(){
+        var rs = {email: fromuser, status: 'create notifier'};
+        $res.send(rs);
+      });
+    });
+
+    app.get('/get_notifier',function(req, res){
+
+      var fromuser  = ReqParam(req, "fromuser");
+
+      console.log(fromuser);
+      Notifier.findOne(
+          { 'FromUser' :  fromuser},
+          function(err, notifier) {
+                //custom code here
+              if(err) throw err;
+              var rs = {email: fromuser, data: notifier};
+              res.send(rs);
+            }
+          );
+    });
+
     app.get('/SMS', function(req, res){
-
-
-
         var tofone = ReqParam(req, 'tofone');
         var message = ReqParam(req, 'message');
-
-
         if(tofone)
         {
             SMS.sendSms(tofone, message, function(err, data){
-
-
                 var resdata = {err, data};
                 res.send(resdata); // for responding on web
             });
             //----------------------------
-
         }
-
     });
+
+    // check in check out funciton
+
+    app.get('/checkin',function(req, res){
+        console.log('check ing');
+        var email = ReqParam(req, 'email');
+
+        corefunc.Checkin(email, function(idobj){
+          console.log(" check in callback " + email);
+          // get message from database here
+          var message =" Notify message from " + email + Date();
+          // send SMS
+          corefunc.Notify(email, message, function(resdata){
+            console.log(" check in notified "+ resdata);
+          });
+        });
+        var rs = {email: email, status: 'checkin'};
+        res.send(rs);
+    });
+
+    app.get('/checkout',function(req, res){
+        console.log('');
+        var email = ReqParam(req, 'email');
+        corefunc.Checkout(email, function(){
+          console.log(" check out callback " + email);
+
+        });
+        var rs = {email: email, status: 'checkout'};
+        res.send(rs);
+    });
+
+
 };
 
 // route middleware to make sure a user is logged in

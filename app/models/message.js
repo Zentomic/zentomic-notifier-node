@@ -4,8 +4,8 @@ var mongoose = require('mongoose');
 
 // define the schema for our user model
   var messageSchema = mongoose.Schema({
-    FromUser        : [Number],// id from user
-    ToUser          : [Number],//id from user
+    FromUser        : String,// id from user
+    ToUser          : String,//id from user
     Message         : String,
     AtDateTime      : {type: Date, default: Date.now}
 });
