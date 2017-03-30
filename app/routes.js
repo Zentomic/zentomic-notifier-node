@@ -195,7 +195,7 @@ module.exports = function(app, passport) {
     //app.get('/login-google', passport.authenticate('google', { scope : ['profile', 'email'] }) );
 
     app.get('/auth/google/callback', passport.authenticate('google'), function(req, res) {
-        console.log(" router calbacl");
+        console.log(" google router calback");
         var rs= {'login':true, 'data':req.user};
         res.send(rs);
     });
@@ -279,7 +279,7 @@ module.exports = function(app, passport) {
     // check in check out funciton
 
     app.get('/checkin',function(req, res){
-        console.log('check ing');
+        console.log('check in');
         var email = ReqParam(req, 'email');
 
         corefunc.Checkin(email, function(idobj){
@@ -288,7 +288,7 @@ module.exports = function(app, passport) {
           var message =" Notify message from " + email + Date();
           // send SMS
           corefunc.Notify(email, message, function(resdata){
-            console.log(" check in notified "+ resdata);
+            console.log(" check in notified ");
           });
         });
         var rs = {email: email, status: 'checkin'};

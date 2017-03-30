@@ -1,0 +1,24 @@
+28 Mar 2017
+To do List:
+1. clean heroku apps on sefl heroku account : DONE
+2. push zentomic-notifier-node : DONE
+3. push webadmin : DONE
+4. push webnotifier : DONE
+5. fix profile for display information: email and fullname
+
+
+6. write node function for notifier
+	6.1 Check in
+	6.2 Check out
+	6.3 timer in Node for access twillio account to notifier
+    Using setTimeout() and clearTimeout() --> keep ID oc timer for clear;
+  6.4 function for create notifier row
+  7. Code Setting notifier section in Profile page DONE
+  8. Write function checkin after saving Setting notifier DONE
+
+7. change to twillio account to real account
+8. write document for deploy to heroku
+
+// do late
+6.4 Message send should configurable
+6.5 message include Customer infor
