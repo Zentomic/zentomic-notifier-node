@@ -8,7 +8,11 @@ var port     = process.env.PORT || 9000;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
-
+//--------------------------------------------------------
+// swagger-node-express
+var argv = require('minimist')(process.argv.slice(2));
+var swagger = require("swagger-node-express");
+//--------------------------------------------------------
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
@@ -65,6 +69,39 @@ app.use(cors(corsOptions));
 
 //===============================Twillio=======================================
 app.use(twilioNotifications.notifyOnError);
+
+
+
+// ==============================================================================================================================
+// swagger
+// ==============================================================================================================================
+var subpath = express();
+app.use("/v1", subpath);
+swagger.setAppHandler(subpath);
+app.use(express.static('dist'));
+subpath.get('/', function (req, res) {
+    res.sendfile(__dirname + '/dist/index.html');
+});
+
+swagger.setApiInfo({
+    title: "Zentomic Notifier Node API",
+    description: "API Zentomic Notifier Node  for notifier project",
+    termsOfServiceUrl: "",
+    contact: "ngoctuan.zentonmic@gmail.com",
+    license: "",
+    licenseUrl: ""
+});
+
+swagger.configureSwaggerPaths('', 'api-docs', '');
+var domain = 'localhost';
+if(argv.domain !== undefined)
+    domain = argv.domain;
+else
+    console.log('No --domain=xxx specified, taking default hostname "localhost".');
+var applicationUrl = 'http://' + domain;
+swagger.configure(applicationUrl, '1.0.0');
+
+
 
 
 // routes ======================================================================
