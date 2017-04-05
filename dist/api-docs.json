@@ -1,172 +1,389 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "version": "1.0.0",
-    "title": "Sample spec",
-    "description": "Sample spec for Swagger",
-    "termsOfService": "http://swagger.io/terms/"
-  },
-  "basePath": "/",
-  "tags" : [
-    {"name": "Tag1",
-    "description": "API for something"
-    }
-  ],
-  "schemes": [
-    "https"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "paths": {
-    "/path/to/method": {
-       "post": {
-          "tags": ["Tag1"],
-          "description": "what this API does",
-          "operationId": "for the URL",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-              {
-                "name": "Job Parameters",
-                "in": "body",
-                "description": "Job to add to the database",
-                "required": true,
-              "schema": {
-                "$ref": "#/definitions/create"
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "zentomic Notifier Node on Heroku",
+        "description": "Zentomic Notifier Node, source code (https://github.com/Zentomic/zentomic-notifier-node)\n"
+    },
+    "host": "zentomic-notifier-node.herokuapp.com",
+    "basePath": "",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json",
+        "text/xml"
+    ],
+    "produces": [
+        "application/json",
+        "text/html"
+    ],
+    "paths": {
+        "/signup-local": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local user",
+                        "required": true
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "type": "string",
+                        "description": "password of local user",
+                        "required": true
+                    },
+                    {
+                        "name": "fullname",
+                        "in": "query",
+                        "type": "string",
+                        "description": "fullname of local user",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "signup with local account"
+                    }
                 }
             }
-          ],
-          "responses": {
-            "200": {
-              "description": "create response",
-              "schema": {
-                 "$ref": "#/definitions/response"
-              }
-            }
-          }
-        }
-    },
-    "/path/to/method/{someVariable}": {
-        "delete":{
-          "tags":["Tag1"],
-          "description":"Deletes a something",
-          "operationId":"delete",
-          "produces": [
-            "application/json"
-          ],
-          "parameters":[
-              {
-                "name": "someVariable",
-                "in": "path",
-                "description": "ID to delete",
-                "required": true,
-                "type": "string"
-              }
-            ],
-          "responses": {
-            "200": {
-              "description": "delete response",
-              "schema":{
-                "$ref":"#/definitions/deleteRes"
-              }
-            }
-          }
         },
-      "get":{
-          "tags": [ "Tag1"],
-          "description": "Returns the status of something",
-          "operationId": "findById",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-              {
-                "name": "ID",
-                "in": "path",
-                "description": "ID to fetch",
-                "required": true,
-                "type": "string"
-              }
-            ],
-        "responses": {
-            "200": {
-              "description": "response",
-              "schema": {
-                "$ref": "#/definitions/response1"
-              }
+        "/login-local": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local user",
+                        "required": true
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "type": "string",
+                        "description": "password of local user",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "login with local account"
+                    }
+                }
             }
-          }
-        }
-      }
-  },
-  "definitions": {
-    "create": {
-      "properties": {
-        "eventId": {
-          "required":true,
-          "type": "string",
-          "example": "mathmaticial"
         },
-        "numberRequired": {
-          "required":true,
-          "type":"integer",
-          "format": "int64",
-          "example": 500
-        }
-      }
-    },
-    "response1": {
-        "properties": {
-          "jobID": {
-            "required":true,
-            "type": "string",
-            "example": "23423456543"
-          },
-          "request": {
-            "required":true,
-            "type": "schema",
-            "example": {
-              "eventId":"mathmaticial",
-              "numberRequired": 500
+        "/auth/google/callback": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "type": "string",
+                        "description": "code from google plus auth service",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "login with local account"
+                    }
+                }
             }
-          }
-      }
-    },
-    "response": {
-        "properties": {
-            "jobID": {
-              "required": true,
-              "type" : "string",
-              "example" : "12321432423"
+        },
+        "/get_agent": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "agent infor"
+                    }
+                }
+            }
+        },
+        "/update_agent": {
+            "put": {
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent",
+                        "required": true
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "type": "string",
+                        "description": "password of local agent",
+                        "required": true
+                    },
+                    {
+                        "name": "fullname",
+                        "in": "query",
+                        "type": "string",
+                        "description": "fullname of local agent",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "err as well as agent infor"
+                    }
+                }
+            }
+        },
+        "/delete_agent": {
+            "delete": {
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent to be deleted",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "agent email and error"
+                    }
+                }
+            }
+        },
+        "/create_notifier": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "fromuser",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent",
+                        "required": true
+                    },
+                    {
+                        "name": "fullname",
+                        "in": "query",
+                        "type": "string",
+                        "description": "fullname of notifier",
+                        "required": true
+                    },
+                    {
+                        "name": "fone",
+                        "in": "query",
+                        "type": "string",
+                        "description": "fone of notifier",
+                        "required": true
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent",
+                        "required": true
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "type": "string",
+                        "description": "type of notifier",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "err as well as agent infor"
+                    }
+                }
+            }
+        },
+        "/get_notifier": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "fromuser",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get list of notifier based on agent email"
+                    }
+                }
+            }
+        },
+        "/delete_notifier": {
+            "delete": {
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of notifier",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "notifier email and error"
+                    }
+                }
+            }
+        },
+        "/SMS": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "tofone",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of notifier",
+                        "required": true
+                    },
+                    {
+                        "name": "message",
+                        "in": "query",
+                        "type": "string",
+                        "description": "message for sending",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "send sms test to tofone"
+                    }
+                }
+            }
+        },
+        "/checkin": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent for creating checking",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "email and status with checkin string"
+                    }
+                }
+            }
+        },
+        "/checkout": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent for creating checkout",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "email and status with checkin string"
+                    }
+                }
             }
         }
     },
-    "delete": {
-        "properties": {
-            "jobID": {
-              "required": true,
-              "type" : "string",
-              "example" : "234344234234"
-            },
-            "status" : {
-              "required": true,
-              "type": "string",
-              "example": "deleted"
+    "definitions": {
+        "Pet": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "birthday": {
+                    "type": "integer",
+                    "format": "int32"
+                }
             }
-        }
-    },
-    "400error" : {
-       "properties": {
+        },
+        "Agent": {
+            "type": "object",
+            "properties": {
+                "local": {
+                    "type": "string"
+                },
+                "facebook": {
+                    "type": "string"
+                },
+                "google": {
+                    "type": "string"
+                }
+            }
+        },
+        "AgentSetting": {
+            "type": "object",
+            "properties": {
+                "AgentEmail": {
+                    "type": "string"
+                },
+                "Setting": {
+                    "type": "string"
+                }
+            }
+        },
         "message": {
-          "type": "string",
-          "example" : "400 Bad Request"
+            "type": "object",
+            "properties": {
+                "FromUser": {
+                    "type": "string"
+                },
+                "ToUser": {
+                    "type": "string"
+                },
+                "Message": {
+                    "type": "string"
+                },
+                "AtDateTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "Notifier": {
+            "type": "object",
+            "properties": {
+                "FromAgent": {
+                    "type": "string"
+                },
+                "Type": {
+                    "type": "string"
+                },
+                "Info": {
+                    "type": "string"
+                },
+                "local": {
+                    "type": "string"
+                },
+                "facebook": {
+                    "type": "string"
+                },
+                "google": {
+                    "type": "string"
+                }
+            }
         }
-      }
     }
-  }
 }

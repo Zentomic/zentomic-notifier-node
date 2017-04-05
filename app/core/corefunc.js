@@ -4,8 +4,8 @@
   Zentomic
 */
 // load up the user model
-var User       = require('../models/user');
-var Notifier       = require('../models/notifier');
+var Agent       = require('../models/Agent');
+var Notifier       = require('../models/Notifier');
 var SMS        = require('../twilioClient');
 //===========================================================================================================
 //===========================================================================================================
@@ -15,32 +15,6 @@ var CONST_TIMEOUT = 10*1000; // 30 seconds
 //--------------------------------------------------------
 var CoreFunc = function(){
   this.listID = {};
-  this.Notifier_Func = {
-    Create  : function(fromuser, fullname, fone, email, type, callback) {
-                var notifier = new Notifier();
-                notifier.FromUser = fromuser;
-                notifier.Info.Fullname  = fullname;
-                notifier.Info.Fone    =fone;
-                notifier.Info.Email   = email;
-                notifier.Type = type;
-
-                // delete last information
-                Notifier.findOneAndRemove({'FromUser':fromuser}, function(err){
-                    if(err) throw err;
-                    console.log('delete old notifier');
-                    //
-                    notifier.save(function(err){
-                        if (err) throw err;
-                        console.log('notifier created!');
-                        if(callback) callback();
-                    });
-                });
-
-
-              }
-
-  }; // crud notifier
-
 };
 
 CoreFunc.prototype.Checkin = function(email, callback, timeout){
@@ -72,8 +46,6 @@ CoreFunc.prototype.Checkout = function(email, callback){
     clearTimeout(idObj);
     delete this.listID[email];
   }
-
-//  console.log(this.listID);
 }
 
 CoreFunc.prototype.Notify = (fromemail, message, callback)=>{
@@ -81,7 +53,7 @@ CoreFunc.prototype.Notify = (fromemail, message, callback)=>{
   Notifier.findOne(
       { 'FromUser' :  fromemail },
           function(err, notifier) {
-            console.log("Notify " + fromemail + notifier );
+            console.log("Notify sms " + fromemail + notifier );
               //custom code here
               if(err) console.log(err);
               if(notifier)
@@ -106,8 +78,90 @@ CoreFunc.prototype.Notify = (fromemail, message, callback)=>{
 
 CoreFunc.prototype.Notifier  = function() {
   console.log(this.Notifier_Func);
-  return this.Notifier_Func;
+  var Notifier_Func = {
+    // create and update
+    Create: function(fromuser, fullname, fone, email, type, callback)
+    {
+        var notifier = new Notifier();
+        notifier.FromAgent = fromuser;
+        notifier.Info.Fullname  = fullname;
+        notifier.Info.Fone    =fone;
+        notifier.Info.Email   = email;
+        notifier.Type = type;
+
+        // find and remove
+        Notifier.findOneAndRemove({ 'FromAgent' :  fromuser, 'Info.Email':email}, function(err){
+          if(err) throw err;
+          // save notifier
+          notifier.save(function(err){
+              if (err) throw err;
+              console.log('notifier created!');
+              if(callback) callback();
+          });
+        });
+      },
+      Read: function(fromuser, callback)
+      {
+          Notifier.find(
+              { 'FromAgent' :  fromuser},
+              function(err, notifier) {
+                    //custom code here
+                  if(err) throw err;
+                  var rs = {email: fromuser, data: notifier};
+                  if(callback) callback(rs);
+                }
+          );
+      },
+      Delete : function (infoemail, callback)
+      {
+        Notifier.findOneAndRemove({'Info.Email':infoemail},function(err){
+          if(callback) callback(err);
+        });
+      },
+      Delete_FromAgent : function(agentemail, callback)
+      {
+        Notifier.find({'FromAgent':agentemail}, function(err, agent){
+          agent.remove(callback(err));   // delete all notifer of agent
+        });
+      }
+  }; // crud notifier
+
+  return Notifier_Func;
 };
 
+// CRUD Agent
+CoreFunc.prototype.Agent = function()
+{
+  return {
+    Read: function(localemail, callback)
+    {
+      Agent.findOne(
+      { 'local.email' : localemail },function(err, agent){
+        if(callback) callback(err, agent);
+      });
+    },
+    Update: function(email, fullname, password, callback)
+    {
+      Agent.findOne(
+      { 'local.email' : email },function(err, agent){
+        if(err) throw err;
+        agent.local.email  = email;
+        agent.local.fullname  = fullname;
+        agent.local.password  = agent.generateHash(password);
+        agent.save(function(err){
+          if(callback) callback(err, agent);
+        });
+      });
+    },
+    Delete: function(email, callback)
+    {
+      // remove agent
+      Agent.findOneAndRemove({'local.email':email},function(err){
+        if(callback) callback(err);
+      });
+    },
+
+  };
+}
 // export module
 module.exports = CoreFunc;

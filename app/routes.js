@@ -1,7 +1,7 @@
 
 // load up the user model
-var User       = require('../app/models/user');
-var Notifier   = require('../app/models/notifier');
+var User       = require('../app/models/Agent');
+var Notifier   = require('../app/models/Notifier');
 var SMS        = require('../app/twilioClient');
 var ReqParam   = require('../config/ReqParam');
 var CoreFunc   = require('../app/core/corefunc.js');
@@ -111,6 +111,7 @@ module.exports = function(app, passport) {
     //---------------------------------------------------------------------------------------------------------------------------
 
     // local signup
+    // create agent
     app.get('/signup-local', function(req, res){
 
         var result = {err: null, data: null};
@@ -128,7 +129,7 @@ module.exports = function(app, passport) {
             {
                // check to see if theres already a user with that email
                 if (user) {
-                    result.data = "email already registered";
+                    result.data = "email already registered " + user;
                 } else {
 
                 // if there is no user with that email
@@ -173,34 +174,29 @@ module.exports = function(app, passport) {
     app.get('/login-local', function(req, res, next) {
           passport.authenticate('local-login', function (err, user, info) {
           if (err) { return next(err); }
-          if (!user) { return res.redirect('/login'); }
+          if (!user) {
+            var rs= {'login':false, 'data':null};
+              return res.send(rs);
+          }
           req.logIn(user, function(err) {
-          if (err) { return next(err); }
+            if (err) { return next(err); }
 
-          // succes login
-          console.log(req.flash('loginMessage'));
-          var message = req.flash('loginMessage').toString();
+            // succes login
+            console.log(req.flash('loginMessage'));
+            var message = req.flash('loginMessage').toString();
 
-          var rs= {'login':true, 'data':user};
+            var rs= {'login':true, 'data':user};
 
-          return res.send(rs);
+            return res.send(rs);
           });
         })(req, res, next);
     });
-
-
-
-
-
-
-    //app.get('/login-google', passport.authenticate('google', { scope : ['profile', 'email'] }) );
 
     app.get('/auth/google/callback', passport.authenticate('google'), function(req, res) {
         console.log(" google router calback");
         var rs= {'login':true, 'data':req.user};
         res.send(rs);
     });
-
 
     // the callback after google has authenticated the user
     // callback must be register at google console API
@@ -229,7 +225,44 @@ module.exports = function(app, passport) {
         res.send(rs);
     });
 
-   //-------------------------------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------
+    // AGENT
+    // agent create is /signup-local
+    app.get('/get_agent', function(req, res){
+      var result = {err: null, data: null};
+
+      var email = ReqParam(req, 'email');
+      //-------------------------------------------
+      corefunc.Agent().Read(email, function(err, agent){
+        result.err = err;
+        result.data = agent;
+        res.send(result);
+      });
+    });
+    //----------------------------------------
+    app.put('/update_agent', function(req, res){
+      var result = {err: null, data: null};
+
+      var email = ReqParam(req, 'email');
+      var password = ReqParam(req, 'password');
+      var fullname = ReqParam(req, 'fullname');
+      //-------------------------------------------
+      corefunc.Agent().Update(email, fullname, password, function(err, agent){
+        result.err = err;
+        result.data = agent;
+        res.send(result);
+      });
+    });
+    //------------------------------------------------
+    app.delete('/delete_agent',function(req, res){
+      var localemail  = ReqParam(req, "email");
+      console.log(localemail);
+      corefunc.Agent().Delete(localemail,   function(err) {
+        var resdata = {email: localemail, error:err };
+        res.send(resdata);
+        });
+      });
+    //-------------------------------------------------------------------------------------------------------------------------------
     //==================================================This is the twilio section =================================================
     // this purpose for this is testing twilio on node system
     app.post('/create_notifier',function(req, res){
@@ -246,24 +279,32 @@ module.exports = function(app, passport) {
         var rs = {email: fromuser, status: 'create notifier'};
         $res.send(rs);
       });
-    });
 
+
+
+    });
+    //-------------------------------
     app.get('/get_notifier',function(req, res){
 
       var fromuser  = ReqParam(req, "fromuser");
 
       console.log(fromuser);
-      Notifier.findOne(
-          { 'FromUser' :  fromuser},
-          function(err, notifier) {
-                //custom code here
-              if(err) throw err;
-              var rs = {email: fromuser, data: notifier};
-              res.send(rs);
-            }
-          );
-    });
+      corefunc.Notifier().Read(fromuser,   function(rs) {
+            res.send(rs);
+          });
 
+    });
+    //-------------------------------
+    app.delete('/delete_notifier',function(req, res){
+
+      var infoemail  = ReqParam(req, "email");
+      console.log(infoemail);
+      corefunc.Notifier().Delete(infoemail,   function(err) {
+        var resdata = {email: infoemail, error:err };
+        res.send(resdata);});
+
+    });
+    //-------------------------------
     app.get('/SMS', function(req, res){
         var tofone = ReqParam(req, 'tofone');
         var message = ReqParam(req, 'message');
@@ -276,9 +317,7 @@ module.exports = function(app, passport) {
             //----------------------------
         }
     });
-
     // check in check out funciton
-
     app.get('/checkin',function(req, res){
         console.log('check in');
         var email = ReqParam(req, 'email');
@@ -295,7 +334,7 @@ module.exports = function(app, passport) {
         var rs = {email: email, status: 'checkin'};
         res.send(rs);
     });
-
+    //-------------------------------
     app.get('/checkout',function(req, res){
         console.log('');
         var email = ReqParam(req, 'email');
@@ -306,8 +345,6 @@ module.exports = function(app, passport) {
         var rs = {email: email, status: 'checkout'};
         res.send(rs);
     });
-
-
 };
 
 // route middleware to make sure a user is logged in
