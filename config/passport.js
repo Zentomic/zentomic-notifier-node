@@ -8,7 +8,6 @@ var GooglePlusStrategy = require('passport-google-plus');
 
 // load up the user model
 var User       = require('../app/models/Agent');
-var Notifier   = require('../app/models/Notifier');
 // load the auth variables
 var configAuth = require('./auth');
 

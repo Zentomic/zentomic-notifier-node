@@ -5,7 +5,7 @@
 */
 // load up the user model
 var Agent       = require('../models/Agent');
-var Notifier       = require('../models/Notifier');
+var Notifier       = require('../models/notifier');
 var SMS        = require('../twilioClient');
 //===========================================================================================================
 //===========================================================================================================

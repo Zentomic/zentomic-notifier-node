@@ -1,7 +1,7 @@
 
 // load up the user model
 var User       = require('../app/models/Agent');
-var Notifier   = require('../app/models/Notifier');
+var Notifier   = require('../app/models/notifier');
 var SMS        = require('../app/twilioClient');
 var ReqParam   = require('../config/ReqParam');
 var CoreFunc   = require('../app/core/corefunc.js');
