@@ -36,4 +36,4 @@ var NotifierSchema = mongoose.Schema({
 //-------------------------------------------------------------------------------------------
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('Notifiers', NotifierSchema);
+module.exports = mongoose.model('notifiers', NotifierSchema);
