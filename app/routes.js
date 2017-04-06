@@ -10,43 +10,12 @@ var corefunc  = new CoreFunc();
 
 module.exports = function(app, passport) {
 
-
-    // =====================================
+    /* =====================================
     // HOME PAGE (with login links) ========
-    // =====================================
+    // =====================================*/
     app.get('/', function(req, res) {
         res.render('index.ejs'); // load the index.ejs file
     });
-
-    // =====================================
-    // LOGIN ===============================
-    // =====================================
-    // show the login form
-    app.get('/login', function(req, res) {
-
-        // render the page and pass in any flash data if it exists
-        res.render('login.ejs', { message: req.flash('loginMessage') });
-    });
-
-    // process the login form
-    // app.post('/login', do all our passport stuff here);
-
-    // =====================================
-    // SIGNUP ==============================
-    // =====================================
-    // show the signup form
-    app.get('/signup', function(req, res) {
-
-        // render the page and pass in any flash data if it exists
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
-    });
-
-
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/login', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
 
     // =====================================
     // FACEBOOK ROUTES =====================
@@ -76,90 +45,9 @@ module.exports = function(app, passport) {
                     failureRedirect : '/'
             }));
 
-
-    // process the signup form
-    // app.post('/signup', do all our passport stuff here);
-
-    // =====================================
-    // PROFILE SECTION =====================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
-            user : req.user // get the user out of session and pass to template
-        });
-    });
-
-    // =====================================
-    // LOGOUT ==============================
-    // =====================================
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-    });
-
-    // process the signup form
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
-
     //---------------------------------------------------------------------------------------------------------------------------
     //  process for login Code by Tony
     //---------------------------------------------------------------------------------------------------------------------------
-
-    // local signup
-    // create agent
-    app.get('/signup-local', function(req, res){
-
-        var result = {err: null, data: null};
-
-        var email = ReqParam(req, 'email');
-        var password = ReqParam(req, 'password');
-        var fullname = ReqParam(req, 'fullname');
-
-        User.findOne(
-        { 'local.email' : email },
-        function(err, user) {
-            //custom code here
-                 // if there are any errors, return the error
-            if (!err)
-            {
-               // check to see if theres already a user with that email
-                if (user) {
-                    result.data = "email already registered " + user;
-                } else {
-
-                // if there is no user with that email
-                // create the user
-                var newUser            = new User();
-
-                // set the user's local credentials
-                newUser.local.email    = email;
-                newUser.local.fullname    = fullname;
-                newUser.local.password = newUser.generateHash(password);
-
-                // save the user
-                newUser.save(function(err) {
-                    if (err) throw err;
-                    result.data = newUser;
-                });
-                }
-            }
-            else result.err = err;
-
-            res.send(result);
-           // responed;
-            }
-
-
-        );
-
-
-
-    });
 
      //  process for login local
      // never return user data when login successful
@@ -171,6 +59,10 @@ module.exports = function(app, passport) {
                 })  );
 */
 // custom login deserialize
+
+    /*
+      Login local
+    */
     app.get('/login-local', function(req, res, next) {
           passport.authenticate('local-login', function (err, user, info) {
           if (err) { return next(err); }
@@ -191,6 +83,7 @@ module.exports = function(app, passport) {
           });
         })(req, res, next);
     });
+
     app.get('/auth/google/callback', passport.authenticate('google'), function(req, res) {
         console.log(" google router calback");
         var rs= {'login':true, 'data':req.user};
@@ -222,9 +115,12 @@ module.exports = function(app, passport) {
         res.send(rs);
     });
     //--------------------------------------------------------------
-    // AGENT
-    // agent create is /signup-local
-    app.get('/get_agent', function(req, res){
+
+    // --------------------AGENT------------------------------------
+    /*
+      Get Agent
+    */
+    app.get('/Agent', function(req, res){
       var result = {err: null, data: null};
 
       var email = ReqParam(req, 'email');
@@ -235,8 +131,61 @@ module.exports = function(app, passport) {
         res.send(result);
       });
     });
-    //----------------------------------------
-    app.put('/update_agent', function(req, res){
+    /*
+      create agent
+    */
+    app.post('/Agent', function(req, res){
+
+        var result = {err: null, data: null};
+
+        var email = ReqParam(req, 'email');
+        var password = ReqParam(req, 'password');
+        var fullname = ReqParam(req, 'fullname');
+
+        User.findOne(
+        { 'local.email' : email },
+        function(err, user) {
+            //custom code here
+                 // if there are any errors, return the error
+            if (!err)
+            {
+               // check to see if theres already a user with that email
+                if (user) {
+                    result.data = "email already registered " + user;
+                } else {
+
+                  // if there is no user with that email
+                  // create the user
+                  var newUser            = new User();
+
+                  // set the user's local credentials
+                  newUser.local.email    = email;
+                  newUser.local.fullname    = fullname;
+                  newUser.local.password = newUser.generateHash(password);
+
+                  // save the user
+                  newUser.save(function(err) {
+                      if (err) throw err;
+                      result.data = newUser;
+                  });
+                }
+            }
+            else result.err = err;
+
+            res.send(result);
+           // responed;
+            }
+
+
+        );
+
+
+
+    });
+    /*
+      Update Agent
+    */
+    app.put('/Agent', function(req, res){
       var result = {err: null, data: null};
 
       var email = ReqParam(req, 'email');
@@ -249,8 +198,10 @@ module.exports = function(app, passport) {
         res.send(result);
       });
     });
-    //------------------------------------------------
-    app.delete('/delete_agent',function(req, res){
+    /*
+      Delete Agent
+    */
+    app.delete('/Agent',function(req, res){
       var localemail  = ReqParam(req, "email");
       console.log(localemail);
       corefunc.Agent().Delete(localemail,   function(err) {
@@ -261,6 +212,7 @@ module.exports = function(app, passport) {
     //-------------------------------------------------------------------------------------------------------------------------------
     //==================================================This is the twilio section =================================================
     // this purpose for this is testing twilio on node system
+
     app.post('/create_notifier',function(req, res){
       console.log('create_notifier');
       var fromuser = ReqParam(req, 'fromuser');
