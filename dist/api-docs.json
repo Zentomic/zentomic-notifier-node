@@ -8,7 +8,8 @@
     "host": "zentomic-notifier-node.herokuapp.com",
     "basePath": "",
     "schemes": [
-        "https"
+        "https",
+        "http"
     ],
     "consumes": [
         "application/json",

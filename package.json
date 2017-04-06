@@ -3,8 +3,6 @@
   "main": "server.js",
   "dependencies": {
     "bcrypt-nodejs": "latest",
-    "swagger-node-express": "~2.0",
-    "minimist": "*",
     "body-parser": "~1.17.1",
     "bson": "^1.0.4",
     "connect-flash": "~0.1.1",
@@ -14,6 +12,7 @@
     "express": "~4.15.2",
     "express-session": "~1.15.1",
     "method-override": "~2.3.7",
+    "minimist": "*",
     "mongoose": "~4.9.0",
     "morgan": "~1.8.1",
     "passport": "^0.3.2",
@@ -21,7 +20,8 @@
     "passport-google-oauth": "~1.0.0",
     "passport-google-plus": "git+https://github.com/ngoctuan82/passport-google-plus.git",
     "passport-local": "~1.0.0",
-    "passport-twitter": "~1.0.2"
+    "passport-twitter": "~1.0.2",
+    "swagger-node-express": "^2.1.3"
   },
   "engines": {
     "node": "6.9.5"
