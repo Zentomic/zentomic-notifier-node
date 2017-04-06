@@ -98,7 +98,7 @@ if(argv.domain !== undefined)
     domain = argv.domain;
 else
     console.log('No --domain=xxx specified, taking default hostname "localhost".');
-var applicationUrl = __dirname + domain;
+var applicationUrl = 'http://' + domain;
 swagger.configure(applicationUrl, '1.0.0');
 
 
