@@ -5,7 +5,7 @@
         "title": "Realestate API",
         "description": "Realestate API from Zentomic, source code (https://github.com/Zentomic/zentomic-notifier-node)\n"
     },
-    "host": "localhost:9000",
+    "host": "zentomic-notifier-node.herokuapp.com",
     "basePath": "",
     "schemes": [
         "https",
