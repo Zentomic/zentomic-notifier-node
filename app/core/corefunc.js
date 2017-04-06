@@ -38,6 +38,9 @@ CoreFunc.prototype.Checkin = function(email, callback, timeout){
 
 }
 
+/*
+Check out means delete all timer of this email
+*/
 CoreFunc.prototype.Checkout = function(email, callback){
   console.log(email + " check out!");
   var idObj = this.listID[email];
@@ -48,30 +51,37 @@ CoreFunc.prototype.Checkout = function(email, callback){
   }
 }
 
-CoreFunc.prototype.Notify = (fromemail, message, callback)=>{
-  // get user from mail.
-  Notifier.findOne(
-      { 'FromUser' :  fromemail },
-          function(err, notifier) {
-            console.log("Notify sms " + fromemail + notifier );
-              //custom code here
-              if(err) console.log(err);
-              if(notifier)
-              {
-                // send to notifier sendSms
-                var tofone = notifier.Info.Fone;
-                if(tofone)
-                {
-                    SMS.sendSms(tofone, message, function(err, data){
-                        var resdata = {err, data};
-                        if(callback) callback(resdata);
-                    });
-                    //----------------------------
-                }
 
+/*
+this function will notify by send sms to list of fone numbers
+*/
+CoreFunc.prototype.Notify = function(fromemail, message, callback){
+  // get user from mail.
+    this.Notifier().Read(fromemail,   function(rs) {
+      var notifiers = rs.data;
+      var counter=0;
+        if(notifiers)
+        {
+          for (var i=0;i<notifiers.length;i++)
+          {
+            var notifier = notifiers[i];
+              console.log("Notify sms " + fromemail + " -> "+ notifier.Info.Email);
+              // send sms
+              var tofone = notifier.Info.Fone;
+              if(tofone)
+              {
+                  SMS.sendSms(tofone, message, null);
+                  //----------------------------
+                  counter++;
               }
           }
-      );
+        }
+        // callback
+        if (callback) {
+          callback(counter);
+        }
+     });
+    //  ----------------------------
 }
 
 // CRUD notifier

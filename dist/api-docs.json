@@ -2,13 +2,14 @@
     "swagger": "2.0",
     "info": {
         "version": "1.0.0",
-        "title": "zentomic Notifier Node on Heroku",
-        "description": "Zentomic Notifier Node, source code (https://github.com/Zentomic/zentomic-notifier-node)\n"
+        "title": "Realestate API",
+        "description": "Realestate API from Zentomic, source code (https://github.com/Zentomic/zentomic-notifier-node)\n"
     },
-    "host": "zentomic-notifier-node.herokuapp.com",
+    "host": "localhost:9000",
     "basePath": "",
     "schemes": [
-        "https"
+        "https",
+        "http",
     ],
     "consumes": [
         "application/json",
@@ -21,6 +22,9 @@
     "paths": {
         "/signup-local": {
             "get": {
+                "tags": [
+                    "Auth"
+                  ],
                 "parameters": [
                     {
                         "name": "email",
@@ -53,6 +57,9 @@
         },
         "/login-local": {
             "get": {
+              "tags": [
+                  "Auth"
+                ],
                 "parameters": [
                     {
                         "name": "email",
@@ -78,6 +85,9 @@
         },
         "/auth/google/callback": {
             "get": {
+              "tags": [
+                  "Auth"
+                ],
                 "parameters": [
                     {
                         "name": "code",
@@ -96,6 +106,9 @@
         },
         "/get_agent": {
             "get": {
+              "tags": [
+                  "Agent"
+                ],
                 "parameters": [
                     {
                         "name": "email",
@@ -114,6 +127,9 @@
         },
         "/update_agent": {
             "put": {
+              "tags": [
+                  "Agent"
+                ],
                 "parameters": [
                     {
                         "name": "email",
@@ -146,6 +162,9 @@
         },
         "/delete_agent": {
             "delete": {
+              "tags": [
+                  "Agent"
+                ],
                 "parameters": [
                     {
                         "name": "email",
@@ -164,6 +183,9 @@
         },
         "/create_notifier": {
             "post": {
+              "tags": [
+                  "Notifier"
+                ],
                 "parameters": [
                     {
                         "name": "fromuser",
@@ -210,6 +232,9 @@
         },
         "/get_notifier": {
             "get": {
+              "tags": [
+                  "Notifier"
+                ],
                 "parameters": [
                     {
                         "name": "fromuser",
@@ -228,6 +253,9 @@
         },
         "/delete_notifier": {
             "delete": {
+              "tags": [
+                  "Notifier"
+                ],
                 "parameters": [
                     {
                         "name": "email",
@@ -246,6 +274,9 @@
         },
         "/SMS": {
             "get": {
+              "tags": [
+                  "Function"
+                ],
                 "parameters": [
                     {
                         "name": "tofone",
@@ -271,6 +302,9 @@
         },
         "/checkin": {
             "get": {
+              "tags": [
+                  "Function"
+                ],
                 "parameters": [
                     {
                         "name": "email",
@@ -289,6 +323,9 @@
         },
         "/checkout": {
             "get": {
+              "tags": [
+                  "Function"
+                ],
                 "parameters": [
                     {
                         "name": "email",

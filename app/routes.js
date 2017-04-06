@@ -191,20 +191,17 @@ module.exports = function(app, passport) {
           });
         })(req, res, next);
     });
-
     app.get('/auth/google/callback', passport.authenticate('google'), function(req, res) {
         console.log(" google router calback");
         var rs= {'login':true, 'data':req.user};
         res.send(rs);
     });
-
     // the callback after google has authenticated the user
     // callback must be register at google console API
     app.get('/login-google/callback',  passport.authenticate('google', {
                         successRedirect : '/json_login_success',
                         failureRedirect : '/json_login_fail'
                 }));
-
     //------------------------------------------------------------------------------------------------------------------------------
     // return sucess login json for auth
     app.get('/json_login_success', function(req, res) {
@@ -224,7 +221,6 @@ module.exports = function(app, passport) {
         var rs= {'login':false, 'data':req.user};
         res.send(rs);
     });
-
     //--------------------------------------------------------------
     // AGENT
     // agent create is /signup-local
@@ -328,7 +324,7 @@ module.exports = function(app, passport) {
           var message =" Notify message from " + email + Date();
           // send SMS
           corefunc.Notify(email, message, function(resdata){
-            console.log(" check in notified ");
+            console.log(" check in notified to numbers: "+resdata);
           });
         });
         var rs = {email: email, status: 'checkin'};

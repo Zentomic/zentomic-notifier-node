@@ -84,8 +84,8 @@ subpath.get('/', function (req, res) {
 });
 
 swagger.setApiInfo({
-    title: "Zentomic Notifier Node API",
-    description: "API Zentomic Notifier Node  for notifier project",
+    title: "Zentomic Real Estate Node API",
+    description: "API Zentomic Real Estate ",
     termsOfServiceUrl: "",
     contact: "ngoctuan.zentonmic@gmail.com",
     license: "",
@@ -98,10 +98,8 @@ if(argv.domain !== undefined)
     domain = argv.domain;
 else
     console.log('No --domain=xxx specified, taking default hostname "localhost".');
-var applicationUrl = 'http://' + domain;
+var applicationUrl = __dirname + domain;
 swagger.configure(applicationUrl, '1.0.0');
-
-
 
 
 // routes ======================================================================
