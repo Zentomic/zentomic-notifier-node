@@ -54,25 +54,27 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // CORS -----------------------------------------------------------------------
 var originsWhitelist = [
+  'http://localhost:9000',              //Front end URL for development time.
    'http://localhost:4200',              //Front end URL for development time.
    'https://zentomic-webadmin.herokuapp.com',     // Front end URL for deploy time, such as may be on heroku.
-   'http://admin.realsafe.io/'
+   'http://admin.realsafe.io'
 ];
 var corsOptions = {
   origin: function (origin, callback) {
     console.log("Origin:"+origin);
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
+    if (originsWhitelist.indexOf(origin) !== -1) {
+      callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'))
+      callback(new Error('Not allowed by CORS'));
     }
   }
 }
 //here is the magic
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
+app.use(cors());
 
 //===============================Twillio=======================================
-app.use(twilioNotifications.notifyOnError);
+//app.use(twilioNotifications.notifyOnError);
 
 
 
