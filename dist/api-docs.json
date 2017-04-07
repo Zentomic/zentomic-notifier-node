@@ -328,7 +328,7 @@
                         "name": "tofone",
                         "in": "query",
                         "type": "string",
-                        "description": "email of notifier",
+                        "description": "fone number to send sms",
                         "required": true
                     },
                     {
