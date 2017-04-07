@@ -54,7 +54,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // CORS -----------------------------------------------------------------------
 var originsWhitelist = [
-  'http://localhost:4200',              //Front end URL for development time.
+//  'http://localhost:4200',              //Front end URL for development time.
    'https://zentomic-webadmin.herokuapp.com',     // Front end URL for deploy time, such as may be on heroku.
    'http://admin.realsafe.io/'
 ];
