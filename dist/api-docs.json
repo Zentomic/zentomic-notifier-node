@@ -3,9 +3,9 @@
     "info": {
         "version": "1.0.0",
         "title": "Real Safe API",
-        "description": "Real Safe API from Zentomic, http:api.realsafe.io source code (https://github.com/Zentomic/zentomic-notifier-node)\n"
+        "description": "Real Safe API from Zentomic, api.realsafe.io source code (https://github.com/Zentomic/zentomic-notifier-node)\n"
     },
-    "host": "localhost:9000",
+    "host": "api.realsafe.io",
     "basePath": "",
     "schemes": ["https", "https"],
     "consumes": [
@@ -228,7 +228,7 @@
             }
         },
         "/Notifier/Update": {
-            "post": {
+            "put": {
               "tags": [
                   "Notifier"
                 ],
@@ -346,10 +346,10 @@
                 }
             }
         },
-        "/checkin": {
+        "/Transaction/Checkin": {
             "get": {
               "tags": [
-                  "Function"
+                  "Transaction"
                 ],
                 "parameters": [
                     {
@@ -367,10 +367,10 @@
                 }
             }
         },
-        "/checkout": {
+        "/Transaction/Checkout": {
             "get": {
               "tags": [
-                  "Function"
+                  "Transaction"
                 ],
                 "parameters": [
                     {
@@ -390,18 +390,6 @@
         }
     },
     "definitions": {
-        "Pet": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "birthday": {
-                    "type": "integer",
-                    "format": "int32"
-                }
-            }
-        },
         "Agent": {
             "type": "object",
             "properties": {

@@ -227,8 +227,10 @@ module.exports = function(app, passport) {
             //----------------------------
         }
     });
-    // check in check out funciton
-    app.get('/checkin',function(req, res){
+    /*
+    Check in
+    */
+    app.get('/Transaction/Checkin',function(req, res){
         console.log('check in');
         var email = ReqParam(req, 'email');
 
@@ -244,8 +246,10 @@ module.exports = function(app, passport) {
         var rs = {email: email, status: 'checkin'};
         res.send(rs);
     });
-    //-------------------------------
-    app.get('/checkout',function(req, res){
+    /*
+    check out
+    */
+    app.get('/Transaction/Checkout',function(req, res){
         console.log('');
         var email = ReqParam(req, 'email');
         corefunc.Checkout(email, function(){
