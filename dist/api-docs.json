@@ -2,10 +2,10 @@
     "swagger": "2.0",
     "info": {
         "version": "1.0.0",
-        "title": "Realestate API",
-        "description": "Realestate API from Zentomic, source code (https://github.com/Zentomic/zentomic-notifier-node)\n"
+        "title": "Real Safe API",
+        "description": "Real Safe API from Zentomic, http:api.realsafe.io source code (https://github.com/Zentomic/zentomic-notifier-node)\n"
     },
-    "host": "api.realsafe.io",
+    "host": "localhost:9000",
     "basePath": "",
     "schemes": ["https", "https"],
     "consumes": [
@@ -17,7 +17,7 @@
         "text/html"
     ],
     "paths": {
-        "/Agent": {
+        "/Agent/Create": {
             "post": {
                 "tags": [
                     "Agent"
@@ -52,7 +52,7 @@
                 }
             }
         },
-        "/login-local": {
+        "/Auth/Local": {
             "get": {
               "tags": [
                   "Auth"
@@ -80,7 +80,7 @@
                 }
             }
         },
-        "/auth/google/callback": {
+        "/Auth/Google": {
             "get": {
               "tags": [
                   "Auth"
@@ -101,7 +101,7 @@
                 }
             }
         },
-        "/get_agent": {
+        "/Agent/Read": {
             "get": {
               "tags": [
                   "Agent"
@@ -122,7 +122,7 @@
                 }
             }
         },
-        "/Agent": {
+        "/Agent/Update": {
             "put": {
               "tags": [
                   "Agent"
@@ -157,7 +157,7 @@
                 }
             }
         },
-        "/delete_agent": {
+        "/Agent/Delete": {
             "delete": {
               "tags": [
                   "Agent"
@@ -178,7 +178,7 @@
                 }
             }
         },
-        "/create_notifier": {
+        "/Notifier/Create": {
             "post": {
               "tags": [
                   "Notifier"
@@ -227,7 +227,56 @@
                 }
             }
         },
-        "/get_notifier": {
+        "/Notifier/Update": {
+            "post": {
+              "tags": [
+                  "Notifier"
+                ],
+                "parameters": [
+                    {
+                        "name": "oldemail",
+                        "in": "query",
+                        "type": "string",
+                        "description": "old email of local notifier",
+                        "required": true
+                    },
+                    {
+                        "name": "fullname",
+                        "in": "query",
+                        "type": "string",
+                        "description": "new fullname of notifier",
+                        "required": true
+                    },
+                    {
+                        "name": "fone",
+                        "in": "query",
+                        "type": "string",
+                        "description": "new fone of notifier",
+                        "required": true
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "new email of local agent",
+                        "required": true
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "type": "string",
+                        "description": "new type of notifier",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "err as well as agent infor"
+                    }
+                }
+            }
+        },
+        "/Notifier/Read": {
             "get": {
               "tags": [
                   "Notifier"
@@ -248,7 +297,7 @@
                 }
             }
         },
-        "/delete_notifier": {
+        "/Notifier/Delete": {
             "delete": {
               "tags": [
                   "Notifier"

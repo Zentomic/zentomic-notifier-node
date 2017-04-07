@@ -17,53 +17,12 @@ module.exports = function(app, passport) {
         res.render('index.ejs'); // load the index.ejs file
     });
 
-    // =====================================
-    // FACEBOOK ROUTES =====================
-    // =====================================
-    // route for facebook authentication and login
-    app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
-    // handle the callback after facebook has authenticated the user
-    app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', {
-            successRedirect : '/profile',
-            failureRedirect : '/'
-        }));
-
-    // =====================================
-    // GOOGLE ROUTES =======================
-    // =====================================
-    // send to google to do the authentication
-    // profile gets us their basic information including their name
-    // email gets their emails
-    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
-
-    // the callback after google has authenticated the user
-    app.post('/auth/google/callback',
-            passport.authenticate('google', {
-                    successRedirect : '/profile',
-                    failureRedirect : '/'
-            }));
-
-    //---------------------------------------------------------------------------------------------------------------------------
-    //  process for login Code by Tony
-    //---------------------------------------------------------------------------------------------------------------------------
-
-     //  process for login local
-     // never return user data when login successful
-/*   app.get('/login-local', passport.authenticate('local-login', {
-                                successRedirect : '/json_login_success', // redirect to the secure profile section
-                                failureRedirect : '/json_login_fail', // redirect back to the signup page if there is an error
-                                failureFlash : true, // allow flash messages
-                                session: true
-                })  );
-*/
-// custom login deserialize
 
     /*
       Login local
     */
-    app.get('/login-local', function(req, res, next) {
+    app.get('/Auth/Local', function(req, res, next) {
           passport.authenticate('local-login', function (err, user, info) {
           if (err) { return next(err); }
           if (!user) {
@@ -84,43 +43,20 @@ module.exports = function(app, passport) {
         })(req, res, next);
     });
 
-    app.get('/auth/google/callback', passport.authenticate('google'), function(req, res) {
+    app.get('/Auth/Google', passport.authenticate('google'), function(req, res) {
         console.log(" google router calback");
         var rs= {'login':true, 'data':req.user};
         res.send(rs);
     });
-    // the callback after google has authenticated the user
-    // callback must be register at google console API
-    app.get('/login-google/callback',  passport.authenticate('google', {
-                        successRedirect : '/json_login_success',
-                        failureRedirect : '/json_login_fail'
-                }));
     //------------------------------------------------------------------------------------------------------------------------------
-    // return sucess login json for auth
-    app.get('/json_login_success', function(req, res) {
-        console.log(req.flash('loginMessage'));
-        var message = req.flash('loginMessage').toString();
-        var user = req.flash('user'); // get user form req
-        var rs= {'login':true, 'data':req.user};
 
-        console.log(rs);
-
-        res.send(rs);
-    });
-    // return fail login json for auty
-    app.get('/json_login_fail', function(req, res) {
-        var message = req.flash('loginMessage').toString();
-        console.log(message);
-        var rs= {'login':false, 'data':req.user};
-        res.send(rs);
-    });
     //--------------------------------------------------------------
 
     // --------------------AGENT------------------------------------
     /*
       Get Agent
     */
-    app.get('/Agent', function(req, res){
+    app.get('/Agent/Read', function(req, res){
       var result = {err: null, data: null};
 
       var email = ReqParam(req, 'email');
@@ -134,7 +70,7 @@ module.exports = function(app, passport) {
     /*
       create agent
     */
-    app.post('/Agent', function(req, res){
+    app.post('/Agent/Create', function(req, res){
 
         var result = {err: null, data: null};
 
@@ -185,7 +121,7 @@ module.exports = function(app, passport) {
     /*
       Update Agent
     */
-    app.put('/Agent', function(req, res){
+    app.put('/Agent/Update', function(req, res){
       var result = {err: null, data: null};
 
       var email = ReqParam(req, 'email');
@@ -201,7 +137,7 @@ module.exports = function(app, passport) {
     /*
       Delete Agent
     */
-    app.delete('/Agent',function(req, res){
+    app.delete('/Agent/Delete',function(req, res){
       var localemail  = ReqParam(req, "email");
       console.log(localemail);
       corefunc.Agent().Delete(localemail,   function(err) {
@@ -212,8 +148,10 @@ module.exports = function(app, passport) {
     //-------------------------------------------------------------------------------------------------------------------------------
     //==================================================This is the twilio section =================================================
     // this purpose for this is testing twilio on node system
-
-    app.post('/create_notifier',function(req, res){
+    /*
+      Create notifier
+    */
+    app.post('/Notifier/Create',function(req, res){
       console.log('create_notifier');
       var fromuser = ReqParam(req, 'fromuser');
       var fullname = ReqParam(req, 'fullname');
@@ -231,8 +169,10 @@ module.exports = function(app, passport) {
 
 
     });
-    //-------------------------------
-    app.get('/get_notifier',function(req, res){
+    /*
+      Get Notifier
+    */
+    app.get('/Notifier/Read',function(req, res){
 
       var fromuser  = ReqParam(req, "fromuser");
 
@@ -242,8 +182,29 @@ module.exports = function(app, passport) {
           });
 
     });
-    //-------------------------------
-    app.delete('/delete_notifier',function(req, res){
+    /*
+      Update Agent
+    */
+    app.put('/Notifier/Update', function(req, res){
+      var result = {err: null, data: null};
+
+      var oldemail = ReqParam(req, 'oldemail');
+      var email = ReqParam(req, 'email');
+      var fullname = ReqParam(req, 'fullname');
+      var fone = ReqParam(req, 'fone');
+      var type = ReqParam(req, 'type');
+
+      //-------------------------------------------
+      corefunc.Notifier().Update(oldemail, fullname, fone, email, type, function(err, notifier){
+        result.err = err;
+        result.data = notifier;
+        res.send(result);
+      });
+    });
+    /*
+      Delete Notifier
+    */
+    app.delete('/Notifier/Delete',function(req, res){
 
       var infoemail  = ReqParam(req, "email");
       console.log(infoemail);
@@ -252,6 +213,7 @@ module.exports = function(app, passport) {
         res.send(resdata);});
 
     });
+
     //-------------------------------
     app.get('/SMS', function(req, res){
         var tofone = ReqParam(req, 'tofone');

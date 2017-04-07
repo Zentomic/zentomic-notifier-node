@@ -110,6 +110,25 @@ CoreFunc.prototype.Notifier  = function() {
           });
         });
       },
+      Update: function(oldemail, fullname, fone, email, type, callback)
+      {
+          // find and remove
+          Notifier.findOne({'Info.Email':oldemail}, function(err, notifier){
+            if(err) throw err;
+
+            notifier.Info.Fullname  = fullname;
+            notifier.Info.Fone    = fone;
+            notifier.Info.Email   = email;
+            notifier.Type = type;
+
+            // save notifier
+            notifier.save(function(err){
+                if (err) throw err;
+                console.log('notifier created!');
+                if(callback) callback();
+            });
+          });
+        },
       Read: function(fromuser, callback)
       {
           Notifier.find(
