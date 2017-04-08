@@ -1,6 +1,6 @@
 git add .
 
-git commit -m "deploy zentomic notifier node Github"
+git commit -m %1
 
 git remote add origin https://github.com/Zentomic/zentomic-notifier-node.git
 
