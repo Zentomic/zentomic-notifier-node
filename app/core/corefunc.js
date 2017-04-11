@@ -18,7 +18,7 @@ var CONST_TIMEOUT = 10*1000; // 30 seconds
 var CoreFunc = function(){
   this.listID = {};
 };
-
+  
 CoreFunc.prototype.Checkin = function(email, callback, timeout){
   console.log(email + " check in!");
 
