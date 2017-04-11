@@ -5,7 +5,7 @@
 */
 // load up the user model
 var Agent       = require('../models/Agent');
-var AgentSetting       = require('../models/agentsetting');
+var AgentSetting = require('../models/AgentSetting');
 var Notifier       = require('../models/notifier');
 var Transaction       = require('../models/transaction');
 var SMS        = require('../twilioClient');
@@ -18,7 +18,7 @@ var CONST_TIMEOUT = 10*1000; // 30 seconds
 var CoreFunc = function(){
   this.listID = {};
 };
-  
+
 CoreFunc.prototype.Checkin = function(email, callback, timeout){
   console.log(email + " check in!");
 
