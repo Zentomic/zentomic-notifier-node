@@ -118,6 +118,7 @@ swagger.configure(applicationUrl, '1.0.0');
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
-app.listen(port);
+//app.listen(port);
+app.listen(process.env.PORT);
 console.log('The magic happens on port ' + port);
 //----------------------------
