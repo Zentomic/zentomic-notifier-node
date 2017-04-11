@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 
 // define the schema for our user model
-  var messageSchema = mongoose.Schema({
+  var transactionSchema = mongoose.Schema({
     FromUser        : String,// id from user
     ToUser          : String,//id from user
     Message         : String,
@@ -12,8 +12,7 @@ var mongoose = require('mongoose');
 
 // methods ======================
 // generating a hash
-
 //-------------------------------------------------------------------------------------------
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('tbl_Message', messageSchema);
+module.exports = mongoose.model('tbl_Transaction', transactionSchema);

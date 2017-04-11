@@ -23,7 +23,6 @@ var configDB = require('./config/database.js');
 //--------------------------------------------
 var cors = require('cors');             // this include for CORS issues
 
-
 //------------------TWILLIO--------------------------------------------
 //------------------TWILLIO--------------------------------------------
 var config = require('./config/config.js');
@@ -32,6 +31,7 @@ var twilioNotifications = require('./app/twilioNotifications');
 
 // ==============================================================================================================================
 // ==============================================================================================================================
+mongoose.Promise = require('bluebird');
 mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration

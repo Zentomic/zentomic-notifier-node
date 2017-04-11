@@ -5,7 +5,9 @@
 */
 // load up the user model
 var Agent       = require('../models/Agent');
+var AgentSetting       = require('../models/agentsetting');
 var Notifier       = require('../models/notifier');
+var Transaction       = require('../models/transaction');
 var SMS        = require('../twilioClient');
 //===========================================================================================================
 //===========================================================================================================
@@ -57,6 +59,7 @@ this function will notify by send sms to list of fone numbers
 */
 CoreFunc.prototype.Notify = function(fromemail, message, callback){
   // get user from mail.
+   var $thiscorefunc = this;
     this.Notifier().Read(fromemail,   function(rs) {
       var notifiers = rs.data;
       var counter=0;
@@ -71,6 +74,9 @@ CoreFunc.prototype.Notify = function(fromemail, message, callback){
               if(tofone)
               {
                   SMS.sendSms(tofone, message, null);
+                  //-----------------------------------
+                  // write transaction table
+                  $thiscorefunc.Transaction().Create(fromemail, notifier.Info.Email, message);
                   //----------------------------
                   counter++;
               }
@@ -192,5 +198,118 @@ CoreFunc.prototype.Agent = function()
 
   };
 }
+
+// CRUD AgentSetting
+CoreFunc.prototype.AgentSetting = function()
+{
+  return {
+    Create: function(agentmail, duration, message, type, callback ){
+      AgentSetting.findOne(
+      { 'AgentEmail' : agentmail },
+        function(err, agentsetting) {
+            //custom code here
+            var result = {err: null, data: null};
+            // if there are any errors, return the error
+            if (!err)
+            {
+               // check to see if theres not already a user with that email
+                if (!agentsetting) {
+                    agentsetting = new AgentSetting();
+                }
+                  // set the agent setting
+                  agentsetting.AgentEmail = agentmail;
+                  agentsetting.Setting.Duration = duration;
+                  agentsetting.Setting.Message = message;
+                  agentsetting.Setting.Type = type;
+                  // save the agentsetting
+                  agentsetting.save(function(err) {
+                      if (err) throw err;
+                      result.data = agentsetting;
+                      if(callback) callback(result);
+                  });
+
+            }
+            else
+            {
+              result.err = err;
+              if(callback) callback(result);
+            }
+
+           // responed;
+            }
+      );
+    },
+    Read: function(agentemail, callback)
+    {
+      AgentSetting.findOne(
+      { 'AgentEmail' : agentemail },function(err, agentsetting){
+        if(callback) callback(err, agentsetting);
+      });
+    },
+    Update: function(agentemail, duration, message, type, callback)
+    {
+      AgentSetting.findOne(
+      { 'AgentEmail' : agentemail },function(err, agentsetting){
+        if(err) throw err;
+        agentsetting.Setting.Duration  = duration;
+        agentsetting.Setting.Message  = message;
+        agentsetting.Setting.Type  = type;
+        agentsetting.save(function(err){
+          if(callback) callback(err, agentsetting);
+        });
+      });
+    },
+    Delete: function(email, callback)
+    {
+      // remove agent
+      AgentSetting.findOneAndRemove({'AgentEmail':email},function(err){
+        if(callback) callback(err);
+      });
+    },
+
+  };
+}
+
+
+
+// CRUD Transaction
+CoreFunc.prototype.Transaction  = function() {
+
+  var Transaction_Func = {
+    // create and update
+    Create: function(fromuser, touser, message, atdatetime, callback)
+    {
+        var transaction = new Transaction();
+        transaction.FromUser = fromuser;
+        transaction.ToUser  = touser;
+        transaction.Message    =message;
+        if(atdatetime) transaction.AtDateTime  = atdatetime;
+        // save transaction
+        transaction.save(function(err){
+              if (err) throw err;
+              console.log('transaction created!');
+              if(callback) callback();
+        });
+      },
+      Read: function(fromuser, touser, callback)
+      {
+          Transaction.find(
+              { 'FromUser' :  fromuser, 'ToUser':touser},
+              function(err, transaction) {
+                    //custom code here
+                  if(err) throw err;
+                  var rs = {email: fromuser, data: transaction};
+                  if(callback) callback(rs);
+                }
+          );
+      }
+  }; // crud notifier
+
+  return Transaction_Func;
+};
+
+
+
+//==============================================================================
 // export module
 module.exports = CoreFunc;

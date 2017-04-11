@@ -180,7 +180,6 @@ module.exports = function(app, passport) {
       corefunc.Notifier().Read(fromuser,   function(rs) {
             res.send(rs);
           });
-
     });
     /*
       Update Agent
@@ -221,23 +220,24 @@ module.exports = function(app, passport) {
         if(tofone)
         {
             SMS.sendSms(tofone, message, function(err, data){
-                var resdata = {err, data};
+                var resdata = {err:err, data:data};
                 res.send(resdata); // for responding on web
             });
             //----------------------------
         }
     });
-    /*
-    Check in
-    */
+    // check in check out funciton
     app.get('/Transaction/Checkin',function(req, res){
         console.log('check in');
         var email = ReqParam(req, 'email');
+        var lat = ReqParam(req, 'lat');
+        var long = ReqParam(req, 'long');
+        var customerinfo = ReqParam(req, 'customerinfo');
 
         corefunc.Checkin(email, function(idobj){
-          console.log(" check in callback " + email);
           // get message from database here
-          var message =" Notify message from " + email + Date();
+          var message ="Message from " + email +"[Lat: "+ lat + " Long:" + long+"]" + Date();
+          console.log(message);
           // send SMS
           corefunc.Notify(email, message, function(resdata){
             console.log(" check in notified to numbers: "+resdata);
@@ -259,6 +259,75 @@ module.exports = function(app, passport) {
         var rs = {email: email, status: 'checkout'};
         res.send(rs);
     });
+    /* Transaction read */
+    app.get('/Transaction/Read',function(req, res){
+      var fromuser  = ReqParam(req, "fromuser");
+      var touser  = ReqParam(req, "touser");
+      corefunc.Transaction().Read(fromuser, touser,  function(rs) {
+            res.send(rs);
+          });
+    });
+    /* Transaction Create */
+    app.post('/Transaction/Create',function(req, res){
+      console.log('create_notifier');
+      var fromuser = ReqParam(req, 'fromuser');
+      var touser = ReqParam(req, 'touser');
+      var message = ReqParam(req, 'message');
+      var atdatetime = ReqParam(req, 'atdatetime');
+      var $res = res;
+      corefunc.Transaction().Create(fromuser, touser, message, atdatetime, function(){
+        var rs = {email: fromuser, status: 'create Transaction'};
+        $res.send(rs);
+      });
+    });
+    //====================================================================
+    // --------------------AgentSetting------------------------------------
+    /*
+      Get AgentSetting
+    */
+    app.get('/AgentSetting/Read', function(req, res){
+      var result = {err: null, data: null};
+
+      var email = ReqParam(req, 'agentemail');
+      //-------------------------------------------
+      corefunc.AgentSetting().Read(email, function(err, agentsetting){
+        result.err = err;
+        result.data = agentsetting;
+        res.send(result);
+      });
+    });
+    /*
+      create AgentSetting
+    */
+    app.post('/AgentSetting/Create', function(req, res){
+
+        var agentmail = ReqParam(req, 'agentmail');
+        var duration = ReqParam(req, 'duration');
+        var message = ReqParam(req, 'message');
+        var type = ReqParam(req, 'type');
+        // create agent Setting
+        corefunc.AgentSetting().Create(agentmail, duration, message, type, function(result){
+          res.send(result);
+        });
+    });
+    /*
+      Update Agent
+    */
+    app.put('/AgentSetting/Update', function(req, res){
+      var result = {err: null, data: null};
+
+      var agentmail = ReqParam(req, 'agentmail');
+      var duration = ReqParam(req, 'duration');
+      var message = ReqParam(req, 'message');
+      var type = ReqParam(req, 'type');
+      //-------------------------------------------
+      corefunc.AgentSetting().Update(agentmail, duration, message, type, function(err, agentsetting){
+        result.err = err;
+        result.data = agentsetting;
+        res.send(result);
+      });
+    });
+
 };
 
 // route middleware to make sure a user is logged in

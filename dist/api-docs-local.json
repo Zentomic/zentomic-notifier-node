@@ -5,7 +5,7 @@
         "title": "Real Safe API",
         "description": "Real Safe API from Zentomic, api.realsafe.io source code (https://github.com/Zentomic/zentomic-notifier-node)\n"
     },
-    "host": "api.realsafe.io",
+    "host": "localhost:9000",
     "basePath": "",
     "schemes": ["https", "https"],
     "consumes": [
