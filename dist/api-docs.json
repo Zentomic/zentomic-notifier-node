@@ -178,6 +178,55 @@
                 }
             }
         },
+        "/Agent/ResendActivationLink": {
+            "post": {
+              "tags": [
+                  "Agent"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent to be deleted",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "agent email and error"
+                    }
+                }
+            }
+        },
+        "/Agent/Activate": {
+            "post": {
+              "tags": [
+                  "Agent"
+                ],
+                "parameters": [
+                    {
+                        "name": "agentemail",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent to be deleted",
+                        "required": true
+                    },
+                    {
+                        "name": "activationkey",
+                        "in": "query",
+                        "type": "string",
+                        "description": "activationkey",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "agent email and error"
+                    }
+                }
+            }
+        },
         "/Notifier/Create": {
             "post": {
               "tags": [
@@ -573,6 +622,82 @@
                 "responses": {
                     "200": {
                         "description": "get agent setting based on agent email"
+                    }
+                }
+            }
+        },
+        "/NotifierSetting/Create": {
+            "post": {
+              "tags": [
+                  "NotifierSetting"
+                ],
+                "parameters": [
+                    {
+                        "name": "notifiermail",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local notifier",
+                        "required": true
+                    },
+                    {
+                        "name": "enablemms",
+                        "in": "query",
+                        "type": "string",
+                        "description": "enable mms or default is sms",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "err as well as notifiersetting infor"
+                    }
+                }
+            }
+        },
+        "/NotifierSetting/Update": {
+            "put": {
+              "tags": [
+                  "NotifierSetting"
+                ],
+                "parameters": [
+                    {
+                        "name": "notifiermail",
+                        "in": "query",
+                        "type": "string",
+                        "description": "old email of notifier",
+                        "required": true
+                    },
+                    {
+                        "name": "enablemms",
+                        "in": "query",
+                        "type": "string",
+                        "description": "enable MMS or default SMS",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "err as well as notifier infor"
+                    }
+                }
+            }
+        },
+        "/NotifierSetting/Read": {            "get": {
+              "tags": [
+                  "NotifierSetting"
+                ],
+                "parameters": [
+                    {
+                        "name": "notifieremail",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of notifier",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get notifier setting based on notifier email"
                     }
                 }
             }
