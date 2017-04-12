@@ -270,8 +270,6 @@ CoreFunc.prototype.AgentSetting = function()
   };
 }
 
-
-
 // CRUD Transaction
 CoreFunc.prototype.Transaction  = function() {
 
@@ -308,6 +306,74 @@ CoreFunc.prototype.Transaction  = function() {
   return Transaction_Func;
 };
 
+// CRUD Notifier Setting
+CoreFunc.prototype.NotifierSetting = function()
+{
+  return {
+    Create: function(notifiermail, enablemms, callback ){
+      NotifierSetting.findOne(
+      { 'NotifierEmail' : notifiermail },
+        function(err, notifiersetting) {
+            //custom code here
+            var result = {err: null, data: null};
+            // if there are any errors, return the error
+            if (!err)
+            {
+               // check to see if theres not already a user with that email
+                if (!notifiersetting) {
+                    notifiersetting = new NotifierSetting();
+                }
+                  // set the notifier setting
+                  notifiersetting.NotifierEmail = notifiermail;
+                  notifiersetting.Setting.EnableMMS = enablemms;
+
+                  // save the notifiersetting
+                  notifiersetting.save(function(err) {
+                      if (err) throw err;
+                      result.data = notifiersetting;
+                      if(callback) callback(result);
+                  });
+
+            }
+            else
+            {
+              result.err = err;
+              if(callback) callback(result);
+            }
+
+           // responed;
+            }
+      );
+    },
+    Read: function(notifieremail, callback)
+    {
+      NotifierSetting.findOne(
+      { 'NotifierEmail' : notifieremail },function(err, notifiersetting){
+        if(callback) callback(err, notifiersetting);
+      });
+    },
+    Update: function(notifieremail, enablemms, callback)
+    {
+      NotifierSetting.findOne(
+      { 'NotifierEmail' : notifieremail },function(err, notifiersetting){
+        if(err) throw err;
+        notifiersetting.Setting.EnableMMS  =enablemms;
+
+        notifiersetting.save(function(err){
+          if(callback) callback(err, notifiersetting);
+        });
+      });
+    },
+    Delete: function(email, callback)
+    {
+      // remove notifier
+      NotifierSetting.findOneAndRemove({'NotifierEmail':email},function(err){
+        if(callback) callback(err);
+      });
+    },
+
+  };
+}
 
 
 //==============================================================================

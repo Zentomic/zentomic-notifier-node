@@ -1,27 +1,34 @@
 // app/models/user.js
 // load the things we need
 var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt-nodejs');
 
 // define the schema for our user model
 var AgentSchema = mongoose.Schema({
 
-    local            : {
-        email        : String,
-        password     : String,
-        fullname     : String
+    local: {
+        email: String,
+        password: String,
+        fullname: String,
     },
-    facebook         : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
+    facebook: {
+        id: String,
+        token: String,
+        email: String,
+        name: String
     },
-    google           : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
+    google: {
+        id: String,
+        token: String,
+        email: String,
+        name: String
+    },
+    activation: {
+        activationKey: String,
+        activated: {
+            type: Boolean,
+            default: false
+        }
     }
 
 });
@@ -37,70 +44,23 @@ AgentSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
-// get user id
-AgentSchema.methods.getID = function(callback) {
-  User.FindOne(
-      { 'local.email' :  this.local.email },
-      function(err, user) {
-          //custom code here
-          if(callback) callback(err, user);
-          }
-      );
+// checking if this  agentemail is verified or not
+AgentSchema.methods.isVerified = function(activationkey) {
+    return   this.activation.activated;
 };
 
-//-------------------------------------------------------------------------------------------
-// CRUD Section -- mapping the moongse functions
-//Create
-/*
-    var newUser = User({
-      local : {
-                    email        : "abc@gmail.com",
-                    password     : "12345",
-                }
-    });
-    // Create a User model
-    newUser.save(function(err){
-        if (err) throw err;
-        console.log('User created!');
-    });
-*/
 
-
-//Read
-/*
-sample:
-    User.FindOne(
-        { 'local.email' :  "abc@gmail.com" },
+// get user id
+AgentSchema.methods.getID = function(callback) {
+    User.FindOne({
+            'local.email': this.local.email
+        },
         function(err, user) {
             //custom code here
-            }
-        );
-
-
-     User.FindOne(
-        { 'facebook.email' :  "abc@gmail.com" },
-        function(err, user) {
-            //custom code here
-            }
-        );
-
-*/
-// Update
-/*
-    User.findOneAndUpdate({'local.email':"abc@gmail.com"}, {"local.email":'cba@gmail.com'}, function(err){
-        if(err) throw err;
-    });
-*/
-//Delete
-/*
-    User.findOneAndRemove({'local.email':"abc@gmail.com"}, function(err){
-        if(err) throw err;
-    });
-*/
-
-//---------------------------------- END CRUD SECTION ---------------------------------------
-
-
+            if (callback) callback(err, user);
+        }
+    );
+};
 //-------------------------------------------------------------------------------------------
 
 // create the model for users and expose it to our app
