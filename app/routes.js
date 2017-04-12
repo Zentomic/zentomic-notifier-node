@@ -209,7 +209,7 @@ module.exports = function(app, passport) {
     });
 
     /*Send ResendActivationLink*/
-    app.post('/Agent/Activate', function(req, res) {
+    app.get('/Agent/Activate', function(req, res) {
         var result = {
             err: null,
             data: null
@@ -340,11 +340,17 @@ module.exports = function(app, passport) {
         var lat = ReqParam(req, 'lat');
         var long = ReqParam(req, 'long');
         var customerinfo = ReqParam(req, 'customerinfo');
+        // auth here if need
 
         corefunc.Checkin(email, function(idobj) {
             // get message from database here
             var message = "Message from " + email + "[Lat: " + lat + " Long:" + long + "]" + Date();
             console.log(message);
+
+            corefunc.Agent().Read(email, function(err, user){
+
+
+            });// end read agent
             // send SMS
             corefunc.Notify(email, message, function(resdata) {
                 console.log(" check in notified to numbers: " + resdata);
