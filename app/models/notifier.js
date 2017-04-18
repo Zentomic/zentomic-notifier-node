@@ -11,7 +11,8 @@ var NotifierSchema = mongoose.Schema({
         middlename: String,
         lastname: String,
         Fone: String,
-        Email: String
+        Email: String,
+        Password:String
     },
     local: {
         email: String,

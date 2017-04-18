@@ -17,720 +17,734 @@
         "text/html"
     ],
     "paths": {
-        "/Agent/Create": {
-            "post": {
-                "tags": [
-                    "Agent"
-                  ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local user",
-                        "required": true
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "type": "string",
-                        "description": "password of local user",
-                        "required": true
-                    },
-                    {
-                        "name": "firstname",
-                        "in": "query",
-                        "type": "string",
-                        "description": "firstname of local user",
-                        "required": true
-                    },
-                    {
-                        "name": "middlename",
-                        "in": "query",
-                        "type": "string",
-                        "description": "middlename of local user",
-                        "required": true
-                    },
-                    {
-                        "name": "lastname",
-                        "in": "query",
-                        "type": "string",
-                        "description": "lastname of local user",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "signup/create a local account"
-                    }
-                }
-            }
-        },
-        "/Auth/Local": {
-            "get": {
-              "tags": [
-                  "Auth"
-                ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local user",
-                        "required": true
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "type": "string",
-                        "description": "password of local user",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "login with local account"
-                    }
-                }
-            }
-        },
-        "/Auth/Google": {
-            "get": {
-              "tags": [
-                  "Auth"
-                ],
-                "parameters": [
-                    {
-                        "name": "code",
-                        "in": "query",
-                        "type": "string",
-                        "description": "code from google plus auth service",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "login with local account"
-                    }
-                }
-            }
-        },
-        "/Agent/Read": {
-            "get": {
+      "/Agent/Create": {
+          "post": {
               "tags": [
                   "Agent"
                 ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "agent infor"
-                    }
-                }
-            }
-        },
-        "/Agent/Update": {
-            "put": {
-              "tags": [
-                  "Agent"
-                ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local user",
-                        "required": true
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "type": "string",
-                        "description": "password of local user",
-                        "required": false
-                    },
-                    {
-                        "name": "firstname",
-                        "in": "query",
-                        "type": "string",
-                        "description": "firstname of local user",
-                        "required": false
-                    },
-                    {
-                        "name": "middlename",
-                        "in": "query",
-                        "type": "string",
-                        "description": "middlename of local user",
-                        "required": false
-                    },
-                    {
-                        "name": "lastname",
-                        "in": "query",
-                        "type": "string",
-                        "description": "lastname of local user",
-                        "required": false
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "err as well as agent infor"
-                    }
-                }
-            }
-        },
-        "/Agent/Delete": {
-            "delete": {
-              "tags": [
-                  "Agent"
-                ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent to be deleted",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "agent email and error"
-                    }
-                }
-            }
-        },
-        "/Agent/ResendActivationLink": {
-            "post": {
-              "tags": [
-                  "Agent"
-                ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent to be deleted",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "agent email and error"
-                    }
-                }
-            }
-        },
-        "/Agent/Activate": {
-            "get": {
-              "tags": [
-                  "Agent"
-                ],
-                "parameters": [
-                    {
-                        "name": "agentemail",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent to be deleted",
-                        "required": true
-                    },
-                    {
-                        "name": "activationkey",
-                        "in": "query",
-                        "type": "string",
-                        "description": "activationkey",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "agent email and error"
-                    }
-                }
-            }
-        },
-        "/Notifier/Create": {
-            "post": {
-              "tags": [
-                  "Notifier"
-                ],
-                "parameters": [
-                    {
-                        "name": "fromuser",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent",
-                        "required": true
-                    },
-                    {
-                        "name": "fullname",
-                        "in": "query",
-                        "type": "string",
-                        "description": "fullname of notifier",
-                        "required": true
-                    },
-                    {
-                        "name": "fone",
-                        "in": "query",
-                        "type": "string",
-                        "description": "fone of notifier",
-                        "required": true
-                    },
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent",
-                        "required": true
-                    },
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "type": "string",
-                        "description": "type of notifier",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "err as well as agent infor"
-                    }
-                }
-            }
-        },
-        "/Notifier/Update": {
-            "put": {
-              "tags": [
-                  "Notifier"
-                ],
-                "parameters": [
-                    {
-                        "name": "oldemail",
-                        "in": "query",
-                        "type": "string",
-                        "description": "old email of local notifier",
-                        "required": true
-                    },
-                    {
-                        "name": "fullname",
-                        "in": "query",
-                        "type": "string",
-                        "description": "new fullname of notifier",
-                        "required": true
-                    },
-                    {
-                        "name": "fone",
-                        "in": "query",
-                        "type": "string",
-                        "description": "new fone of notifier",
-                        "required": true
-                    },
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "new email of local agent",
-                        "required": true
-                    },
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "type": "string",
-                        "description": "new type of notifier",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "err as well as agent infor"
-                    }
-                }
-            }
-        },
-        "/Notifier/Read": {
-            "get": {
-              "tags": [
-                  "Notifier"
-                ],
-                "parameters": [
-                    {
-                        "name": "fromuser",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "get list of notifier based on agent email"
-                    }
-                }
-            }
-        },
-        "/Notifier/Delete": {
-            "delete": {
-              "tags": [
-                  "Notifier"
-                ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of notifier",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "notifier email and error"
-                    }
-                }
-            }
-        },
-        "/SMS": {
-            "get": {
-              "tags": [
-                  "Function"
-                ],
-                "parameters": [
-                    {
-                        "name": "tofone",
-                        "in": "query",
-                        "type": "string",
-                        "description": "fone number to send sms",
-                        "required": true
-                    },
-                    {
-                        "name": "message",
-                        "in": "query",
-                        "type": "string",
-                        "description": "message for sending",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "send sms test to tofone"
-                    }
-                }
-            }
-        },
-        "/Transaction/Checkin": {
-            "get": {
-              "tags": [
-                  "Transaction"
-                ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent for creating checking",
-                        "required": true
-                    },
-                    {
-                        "name": "lat",
-                        "in": "query",
-                        "type": "string",
-                        "description": "LAT of Agent",
-                        "required": true
-                    },
-                    {
-                        "name": "long",
-                        "in": "query",
-                        "type": "string",
-                        "description": "LONG of Agent",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "email and status checkin"
-                    }
-                }
-            }
-        },
-        "/Transaction/Checkout": {
-            "get": {
-              "tags": [
-                  "Transaction"
-                ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent for creating checkout",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "email and status with checkin string"
-                    }
-                }
-            }
-        },
-        "/Transaction/Create": {
-            "post": {
-              "tags": [
-                  "Transaction"
-                ],
-                "parameters": [
-                    {
-                        "name": "fromuser",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent",
-                        "required": true
-                    },
-                    {
-                        "name": "touser",
-                        "in": "query",
-                        "type": "string",
-                        "description": "to notifier",
-                        "required": true
-                    },
-                    {
-                        "name": "message",
-                        "in": "query",
-                        "type": "string",
-                        "description": "message",
-                        "required": true
-                    },
-                    {
-                        "name": "atdatetime",
-                        "in": "query",
-                        "type": "string",
-                        "description": "time, default is now",
-                        "required": false
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "err as well as Transaction infor"
-                    }
-                }
-            }
-        },
-        "/Transaction/Read": {
-            "get": {
-              "tags": [
-                  "Transaction"
-                ],
-                "parameters": [
-                    {
-                        "name": "fromuser",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent",
-                        "required": true
-                    },
-                    {
-                        "name": "touser",
-                        "in": "query",
-                        "type": "string",
-                        "description": "notifier email",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "list of Transaction based on agent email and notifier email"
-                    }
-                }
-            }
-        },
-        "/AgentSetting/Create": {
-            "post": {
-              "tags": [
-                  "AgentSetting"
-                ],
-                "parameters": [
-                    {
-                        "name": "agentmail",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent",
-                        "required": true
-                    },
-                    {
-                        "name": "duration",
-                        "in": "query",
-                        "type": "string",
-                        "description": "duration for notify message",
-                        "required": true
-                    },
-                    {
-                        "name": "message",
-                        "in": "query",
-                        "type": "string",
-                        "description": "message will be sent to notifers",
-                        "required": true
-                    },
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "type": "string",
-                        "description": "type of notify",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "err as well as agentsetting infor"
-                    }
-                }
-            }
-        },
-        "/AgentSetting/Update": {
-            "put": {
-              "tags": [
-                  "AgentSetting"
-                ],
-                "parameters": [
-                    {
-                        "name": "agentmail",
-                        "in": "query",
-                        "type": "string",
-                        "description": "old email of local notifier",
-                        "required": true
-                    },
-                    {
-                        "name": "duration",
-                        "in": "query",
-                        "type": "string",
-                        "description": "duration in minute",
-                        "required": true
-                    },
-                    {
-                        "name": "message",
-                        "in": "query",
-                        "type": "string",
-                        "description": "message for notifying",
-                        "required": true
-                    },
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "type": "string",
-                        "description": "new type of notify",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "err as well as agent infor"
-                    }
-                }
-            }
-        },
-        "/AgentSetting/Read": {
-            "get": {
-              "tags": [
-                  "AgentSetting"
-                ],
-                "parameters": [
-                    {
-                        "name": "agentemail",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "get agent setting based on agent email"
-                    }
-                }
-            }
-        },
-        "/NotifierSetting/Create": {
-            "post": {
-              "tags": [
-                  "NotifierSetting"
-                ],
-                "parameters": [
-                    {
-                        "name": "notifiermail",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local notifier",
-                        "required": true
-                    },
-                    {
-                        "name": "enablemms",
-                        "in": "query",
-                        "type": "string",
-                        "description": "enable mms or default is sms",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "err as well as notifiersetting infor"
-                    }
-                }
-            }
-        },
-        "/NotifierSetting/Update": {
-            "put": {
-              "tags": [
-                  "NotifierSetting"
-                ],
-                "parameters": [
-                    {
-                        "name": "notifiermail",
-                        "in": "query",
-                        "type": "string",
-                        "description": "old email of notifier",
-                        "required": true
-                    },
-                    {
-                        "name": "enablemms",
-                        "in": "query",
-                        "type": "string",
-                        "description": "enable MMS or default SMS",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "err as well as notifier infor"
-                    }
-                }
-            }
-        },
-        "/NotifierSetting/Read": {            "get": {
-              "tags": [
-                  "NotifierSetting"
-                ],
-                "parameters": [
-                    {
-                        "name": "notifieremail",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of notifier",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "get notifier setting based on notifier email"
-                    }
-                }
-            }
-        }
-
+              "parameters": [
+                  {
+                      "name": "email",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local user",
+                      "required": true
+                  },
+                  {
+                      "name": "password",
+                      "in": "query",
+                      "type": "string",
+                      "description": "password of local user",
+                      "required": true
+                  },
+                  {
+                      "name": "fullname",
+                      "in": "query",
+                      "type": "string",
+                      "description": "fullname of local user",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "signup/create a local account"
+                  }
+              }
+          }
+      },
+      "/Auth/Local": {
+          "get": {
+            "tags": [
+                "Auth"
+              ],
+              "parameters": [
+                  {
+                      "name": "email",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local user",
+                      "required": true
+                  },
+                  {
+                      "name": "password",
+                      "in": "query",
+                      "type": "string",
+                      "description": "password of local user",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "login with local account"
+                  }
+              }
+          }
+      },
+      "/Auth/Google": {
+          "get": {
+            "tags": [
+                "Auth"
+              ],
+              "parameters": [
+                  {
+                      "name": "code",
+                      "in": "query",
+                      "type": "string",
+                      "description": "code from google plus auth service",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "login with local account"
+                  }
+              }
+          }
+      },
+      "/Agent/Read": {
+          "get": {
+            "tags": [
+                "Agent"
+              ],
+              "parameters": [
+                  {
+                      "name": "email",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "agent infor"
+                  }
+              }
+          }
+      },
+      "/Agent/Update": {
+          "put": {
+            "tags": [
+                "Agent"
+              ],
+              "parameters": [
+                  {
+                      "name": "email",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent",
+                      "required": true
+                  },
+                  {
+                      "name": "password",
+                      "in": "query",
+                      "type": "string",
+                      "description": "password of local agent",
+                      "required": true
+                  },
+                  {
+                      "name": "fullname",
+                      "in": "query",
+                      "type": "string",
+                      "description": "fullname of local agent",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "err as well as agent infor"
+                  }
+              }
+          }
+      },
+      "/Agent/Delete": {
+          "delete": {
+            "tags": [
+                "Agent"
+              ],
+              "parameters": [
+                  {
+                      "name": "email",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent to be deleted",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "agent email and error"
+                  }
+              }
+          }
+      },
+      "/Agent/ResendActivationLink": {
+          "post": {
+            "tags": [
+                "Agent"
+              ],
+              "parameters": [
+                  {
+                      "name": "email",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent to be deleted",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "agent email and error"
+                  }
+              }
+          }
+      },
+      "/Agent/Activate": {
+          "get": {
+            "tags": [
+                "Agent"
+              ],
+              "parameters": [
+                  {
+                      "name": "agentemail",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent to be deleted",
+                      "required": true
+                  },
+                  {
+                      "name": "activationkey",
+                      "in": "query",
+                      "type": "string",
+                      "description": "activationkey",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "agent email and error"
+                  }
+              }
+          }
+      },
+      "/Notifier/Create": {
+          "post": {
+            "tags": [
+                "Notifier"
+              ],
+              "parameters": [
+                  {
+                      "name": "fromuser",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent",
+                      "required": true
+                  },
+                  {
+                      "name": "firstname",
+                      "in": "query",
+                      "type": "string",
+                      "description": "firstname of notifier",
+                      "required": true
+                  },
+                  {
+                      "name": "middlename",
+                      "in": "query",
+                      "type": "string",
+                      "description": "middle name of notifier",
+                      "required": true
+                  },
+                  {
+                      "name": "lastname",
+                      "in": "query",
+                      "type": "string",
+                      "description": "last name of notifier",
+                      "required": true
+                  },
+                  {
+                      "name": "fone",
+                      "in": "query",
+                      "type": "string",
+                      "description": "fone of notifier",
+                      "required": true
+                  },
+                  {
+                      "name": "email",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent",
+                      "required": true
+                  },
+                  {
+                      "name": "password",
+                      "in": "query",
+                      "type": "string",
+                      "description": "password of local agent",
+                      "required": true
+                  },
+                  {
+                      "name": "type",
+                      "in": "query",
+                      "type": "string",
+                      "description": "type of notifier",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "err as well as agent infor"
+                  }
+              }
+          }
+      },
+      "/Notifier/Update": {
+          "put": {
+            "tags": [
+                "Notifier"
+              ],
+              "parameters": [
+                  {
+                      "name": "oldemail",
+                      "in": "query",
+                      "type": "string",
+                      "description": "old email of local notifier",
+                      "required": true
+                  },
+                  {
+                      "name": "firstname",
+                      "in": "query",
+                      "type": "string",
+                      "description": "firstname of notifier",
+                      "required": false
+                  },
+                  {
+                      "name": "middlename",
+                      "in": "query",
+                      "type": "string",
+                      "description": "middle name of notifier",
+                      "required": false
+                  },
+                  {
+                      "name": "lastname",
+                      "in": "query",
+                      "type": "string",
+                      "description": "last name of notifier",
+                      "required": false
+                  },
+                  {
+                      "name": "fone",
+                      "in": "query",
+                      "type": "string",
+                      "description": "fone of notifier",
+                      "required": false
+                  },
+                  {
+                      "name": "email",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent",
+                      "required": false
+                  },
+                  {
+                      "name": "password",
+                      "in": "query",
+                      "type": "string",
+                      "description": "password of local agent",
+                      "required": false
+                  },
+                  {
+                      "name": "type",
+                      "in": "query",
+                      "type": "string",
+                      "description": "type of notifier",
+                      "required": false
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "err as well as agent infor"
+                  }
+              }
+          }
+      },
+      "/Notifier/Read": {
+          "get": {
+            "tags": [
+                "Notifier"
+              ],
+              "parameters": [
+                  {
+                      "name": "fromuser",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "get list of notifier based on agent email"
+                  }
+              }
+          }
+      },
+      "/Notifier/Delete": {
+          "delete": {
+            "tags": [
+                "Notifier"
+              ],
+              "parameters": [
+                  {
+                      "name": "email",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of notifier",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "notifier email and error"
+                  }
+              }
+          }
+      },
+      "/SMS": {
+          "get": {
+            "tags": [
+                "Function"
+              ],
+              "parameters": [
+                  {
+                      "name": "tofone",
+                      "in": "query",
+                      "type": "string",
+                      "description": "fone number to send sms",
+                      "required": true
+                  },
+                  {
+                      "name": "message",
+                      "in": "query",
+                      "type": "string",
+                      "description": "message for sending",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "send sms test to tofone"
+                  }
+              }
+          }
+      },
+      "/Transaction/Checkin": {
+          "get": {
+            "tags": [
+                "Transaction"
+              ],
+              "parameters": [
+                  {
+                      "name": "email",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent for creating checking",
+                      "required": true
+                  },
+                  {
+                      "name": "lat",
+                      "in": "query",
+                      "type": "string",
+                      "description": "LAT of Agent",
+                      "required": true
+                  },
+                  {
+                      "name": "long",
+                      "in": "query",
+                      "type": "string",
+                      "description": "LONG of Agent",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "email and status checkin"
+                  }
+              }
+          }
+      },
+      "/Transaction/Checkout": {
+          "get": {
+            "tags": [
+                "Transaction"
+              ],
+              "parameters": [
+                  {
+                      "name": "email",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent for creating checkout",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "email and status with checkin string"
+                  }
+              }
+          }
+      },
+      "/Transaction/Create": {
+          "post": {
+            "tags": [
+                "Transaction"
+              ],
+              "parameters": [
+                  {
+                      "name": "fromuser",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent",
+                      "required": true
+                  },
+                  {
+                      "name": "touser",
+                      "in": "query",
+                      "type": "string",
+                      "description": "to notifier",
+                      "required": true
+                  },
+                  {
+                      "name": "message",
+                      "in": "query",
+                      "type": "string",
+                      "description": "message",
+                      "required": true
+                  },
+                  {
+                      "name": "atdatetime",
+                      "in": "query",
+                      "type": "string",
+                      "description": "time, default is now",
+                      "required": false
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "err as well as Transaction infor"
+                  }
+              }
+          }
+      },
+      "/Transaction/Read": {
+          "get": {
+            "tags": [
+                "Transaction"
+              ],
+              "parameters": [
+                  {
+                      "name": "fromuser",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent",
+                      "required": true
+                  },
+                  {
+                      "name": "touser",
+                      "in": "query",
+                      "type": "string",
+                      "description": "notifier email",
+                      "required": false
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "list of Transaction based on agent email and notifier email"
+                  }
+              }
+          }
+      },
+      "/AgentSetting/Create": {
+          "post": {
+            "tags": [
+                "AgentSetting"
+              ],
+              "parameters": [
+                  {
+                      "name": "agentmail",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent",
+                      "required": true
+                  },
+                  {
+                      "name": "duration",
+                      "in": "query",
+                      "type": "string",
+                      "description": "duration for notify message",
+                      "required": true
+                  },
+                  {
+                      "name": "message",
+                      "in": "query",
+                      "type": "string",
+                      "description": "message will be sent to notifers",
+                      "required": true
+                  },
+                  {
+                      "name": "type",
+                      "in": "query",
+                      "type": "string",
+                      "description": "type of notify",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "err as well as agentsetting infor"
+                  }
+              }
+          }
+      },
+      "/AgentSetting/Update": {
+          "put": {
+            "tags": [
+                "AgentSetting"
+              ],
+              "parameters": [
+                  {
+                      "name": "agentmail",
+                      "in": "query",
+                      "type": "string",
+                      "description": "old email of local notifier",
+                      "required": true
+                  },
+                  {
+                      "name": "duration",
+                      "in": "query",
+                      "type": "string",
+                      "description": "duration in minute",
+                      "required": true
+                  },
+                  {
+                      "name": "message",
+                      "in": "query",
+                      "type": "string",
+                      "description": "message for notifying",
+                      "required": true
+                  },
+                  {
+                      "name": "type",
+                      "in": "query",
+                      "type": "string",
+                      "description": "new type of notify",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "err as well as agent infor"
+                  }
+              }
+          }
+      },
+      "/AgentSetting/Read": {
+          "get": {
+            "tags": [
+                "AgentSetting"
+              ],
+              "parameters": [
+                  {
+                      "name": "agentemail",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local agent",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "get agent setting based on agent email"
+                  }
+              }
+          }
+      },
+      "/NotifierSetting/Create": {
+          "post": {
+            "tags": [
+                "NotifierSetting"
+              ],
+              "parameters": [
+                  {
+                      "name": "notifiermail",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of local notifier",
+                      "required": true
+                  },
+                  {
+                      "name": "enablemms",
+                      "in": "query",
+                      "type": "string",
+                      "description": "enable mms or default is sms",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "err as well as notifiersetting infor"
+                  }
+              }
+          }
+      },
+      "/NotifierSetting/Update": {
+          "put": {
+            "tags": [
+                "NotifierSetting"
+              ],
+              "parameters": [
+                  {
+                      "name": "notifiermail",
+                      "in": "query",
+                      "type": "string",
+                      "description": "old email of notifier",
+                      "required": true
+                  },
+                  {
+                      "name": "enablemms",
+                      "in": "query",
+                      "type": "string",
+                      "description": "enable MMS or default SMS",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "err as well as notifier infor"
+                  }
+              }
+          }
+      },
+      "/NotifierSetting/Read": {
+          "get": {
+            "tags": [
+                "NotifierSetting"
+              ],
+              "parameters": [
+                  {
+                      "name": "notifieremail",
+                      "in": "query",
+                      "type": "string",
+                      "description": "email of notifier",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "get notifier setting based on notifier email"
+                  }
+              }
+          }
+      }
     },
     "definitions": {
         "Agent": {

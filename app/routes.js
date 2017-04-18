@@ -261,11 +261,12 @@ module.exports = function(app, passport) {
 
         var fone = ReqParam(req, 'fone');
         var email = ReqParam(req, 'email');
+        var password = ReqParam(req, 'password');
         var type = ReqParam(req, 'type');
 
 
         var $res = res;
-        corefunc.Notifier().Create(fromuser, firstname, middlename, lastname, fone, email, type, function() {
+        corefunc.Notifier().Create(fromuser, firstname, middlename, lastname, fone, email, password, type, function() {
             var rs = {
                 email: fromuser,
                 status: 'create notifier'
@@ -298,13 +299,17 @@ module.exports = function(app, passport) {
         };
 
         var oldemail = ReqParam(req, 'oldemail');
-        var email = ReqParam(req, 'email');
-        var fullname = ReqParam(req, 'fullname');
+        var firstname = ReqParam(req, 'firstname');
+        var middlename = ReqParam(req, 'middlename');
+        var lastname = ReqParam(req, 'lastname');
+
         var fone = ReqParam(req, 'fone');
+        var email = ReqParam(req, 'email');
+        var password = ReqParam(req, 'password');
         var type = ReqParam(req, 'type');
 
         //-------------------------------------------
-        corefunc.Notifier().Update(oldemail, fullname, fone, email, type, function(err, notifier) {
+        corefunc.Notifier().Update(oldemail, firstname, middlename, lastname, fone, email, password,  type, function(err, notifier) {
             result.err = err;
             result.data = notifier;
             res.send(result);

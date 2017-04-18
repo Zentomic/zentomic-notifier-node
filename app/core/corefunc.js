@@ -7,6 +7,7 @@
 var Agent       = require('../models/Agent');
 var AgentSetting = require('../models/AgentSetting');
 var Notifier       = require('../models/notifier');
+var NotifierSetting       = require('../models/NotifierSetting');
 var Transaction       = require('../models/transaction');
 var SMS        = require('../twilioClient');
 //===========================================================================================================
@@ -96,13 +97,18 @@ CoreFunc.prototype.Notifier  = function() {
   console.log(this.Notifier_Func);
   var Notifier_Func = {
     // create and update
-    Create: function(fromuser, fullname, fone, email, type, callback)
+    Create: function(fromuser, firstname, middlename, lastname, fone, email, password, type, callback)
     {
         var notifier = new Notifier();
         notifier.FromAgent = fromuser;
-        notifier.Info.Fullname  = fullname;
+        notifier.Info.firstname  = firstname;
+        notifier.Info.middlename  = middlename;
+        notifier.Info.lastname  = lastname;
         notifier.Info.Fone    =fone;
         notifier.Info.Email   = email;
+        notifier.Info.Password   = password;
+        notifier.local.email   = email;
+        notifier.local.password   = password;
         notifier.Type = type;
 
         // find and remove
@@ -116,22 +122,27 @@ CoreFunc.prototype.Notifier  = function() {
           });
         });
       },
-      Update: function(oldemail, fullname, fone, email, type, callback)
+      Update: function(oldemail, firstname, middlename, lastname, fone, email, password,  type, callback)
       {
           // find and remove
           Notifier.findOne({'Info.Email':oldemail}, function(err, notifier){
             if(err) throw err;
 
-            notifier.Info.Fullname  = fullname;
+            notifier.Info.firstname  = firstname;
+            notifier.Info.middlename  = middlename;
+            notifier.Info.lastname  = lastname;
             notifier.Info.Fone    = fone;
             notifier.Info.Email   = email;
             notifier.Type = type;
+            notifier.Info.Password   = password;
+            notifier.local.email   = email;
+            notifier.local.password   = password;
 
             // save notifier
             notifier.save(function(err){
                 if (err) throw err;
                 console.log('notifier created!');
-                if(callback) callback();
+                if(callback) callback(err, notifier);
             });
           });
         },
@@ -362,11 +373,15 @@ CoreFunc.prototype.NotifierSetting = function()
       NotifierSetting.findOne(
       { 'NotifierEmail' : notifieremail },function(err, notifiersetting){
         if(err) throw err;
+        if(!notifiersetting)
+         notifiersetting = new NotifierSetting();
+
         notifiersetting.Setting.EnableMMS  =enablemms;
 
         notifiersetting.save(function(err){
           if(callback) callback(err, notifiersetting);
         });
+
       });
     },
     Delete: function(email, callback)

@@ -21,9 +21,8 @@
             "post": {
                 "tags": [
                     "Agent"
-                  ],
-                "parameters": [
-                    {
+                ],
+                "parameters": [{
                         "name": "email",
                         "in": "query",
                         "type": "string",
@@ -54,11 +53,10 @@
         },
         "/Auth/Local": {
             "get": {
-              "tags": [
-                  "Auth"
+                "tags": [
+                    "Auth"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "email",
                         "in": "query",
                         "type": "string",
@@ -82,18 +80,16 @@
         },
         "/Auth/Google": {
             "get": {
-              "tags": [
-                  "Auth"
+                "tags": [
+                    "Auth"
                 ],
-                "parameters": [
-                    {
-                        "name": "code",
-                        "in": "query",
-                        "type": "string",
-                        "description": "code from google plus auth service",
-                        "required": true
-                    }
-                ],
+                "parameters": [{
+                    "name": "code",
+                    "in": "query",
+                    "type": "string",
+                    "description": "code from google plus auth service",
+                    "required": true
+                }],
                 "responses": {
                     "200": {
                         "description": "login with local account"
@@ -103,18 +99,16 @@
         },
         "/Agent/Read": {
             "get": {
-              "tags": [
-                  "Agent"
+                "tags": [
+                    "Agent"
                 ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent",
-                        "required": true
-                    }
-                ],
+                "parameters": [{
+                    "name": "email",
+                    "in": "query",
+                    "type": "string",
+                    "description": "email of local agent",
+                    "required": true
+                }],
                 "responses": {
                     "200": {
                         "description": "agent infor"
@@ -124,11 +118,10 @@
         },
         "/Agent/Update": {
             "put": {
-              "tags": [
-                  "Agent"
+                "tags": [
+                    "Agent"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "email",
                         "in": "query",
                         "type": "string",
@@ -159,18 +152,16 @@
         },
         "/Agent/Delete": {
             "delete": {
-              "tags": [
-                  "Agent"
+                "tags": [
+                    "Agent"
                 ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent to be deleted",
-                        "required": true
-                    }
-                ],
+                "parameters": [{
+                    "name": "email",
+                    "in": "query",
+                    "type": "string",
+                    "description": "email of local agent to be deleted",
+                    "required": true
+                }],
                 "responses": {
                     "200": {
                         "description": "agent email and error"
@@ -180,18 +171,16 @@
         },
         "/Agent/ResendActivationLink": {
             "post": {
-              "tags": [
-                  "Agent"
+                "tags": [
+                    "Agent"
                 ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent to be deleted",
-                        "required": true
-                    }
-                ],
+                "parameters": [{
+                    "name": "email",
+                    "in": "query",
+                    "type": "string",
+                    "description": "email of local agent to be deleted",
+                    "required": true
+                }],
                 "responses": {
                     "200": {
                         "description": "agent email and error"
@@ -201,11 +190,10 @@
         },
         "/Agent/Activate": {
             "get": {
-              "tags": [
-                  "Agent"
+                "tags": [
+                    "Agent"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "agentemail",
                         "in": "query",
                         "type": "string",
@@ -229,11 +217,10 @@
         },
         "/Notifier/Create": {
             "post": {
-              "tags": [
-                  "Notifier"
+                "tags": [
+                    "Notifier"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "fromuser",
                         "in": "query",
                         "type": "string",
@@ -241,10 +228,24 @@
                         "required": true
                     },
                     {
-                        "name": "fullname",
+                        "name": "firstname",
                         "in": "query",
                         "type": "string",
-                        "description": "fullname of notifier",
+                        "description": "firstname of notifier",
+                        "required": true
+                    },
+                    {
+                        "name": "middlename",
+                        "in": "query",
+                        "type": "string",
+                        "description": "middle name of notifier",
+                        "required": true
+                    },
+                    {
+                        "name": "lastname",
+                        "in": "query",
+                        "type": "string",
+                        "description": "last name of notifier",
                         "required": true
                     },
                     {
@@ -259,6 +260,13 @@
                         "in": "query",
                         "type": "string",
                         "description": "email of local agent",
+                        "required": true
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "type": "string",
+                        "description": "password of local agent",
                         "required": true
                     },
                     {
@@ -278,11 +286,10 @@
         },
         "/Notifier/Update": {
             "put": {
-              "tags": [
-                  "Notifier"
+                "tags": [
+                    "Notifier"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "oldemail",
                         "in": "query",
                         "type": "string",
@@ -290,32 +297,53 @@
                         "required": true
                     },
                     {
-                        "name": "fullname",
+                        "name": "firstname",
                         "in": "query",
                         "type": "string",
-                        "description": "new fullname of notifier",
-                        "required": true
+                        "description": "firstname of notifier",
+                        "required": false
+                    },
+                    {
+                        "name": "middlename",
+                        "in": "query",
+                        "type": "string",
+                        "description": "middle name of notifier",
+                        "required": false
+                    },
+                    {
+                        "name": "lastname",
+                        "in": "query",
+                        "type": "string",
+                        "description": "last name of notifier",
+                        "required": false
                     },
                     {
                         "name": "fone",
                         "in": "query",
                         "type": "string",
-                        "description": "new fone of notifier",
-                        "required": true
+                        "description": "fone of notifier",
+                        "required": false
                     },
                     {
                         "name": "email",
                         "in": "query",
                         "type": "string",
-                        "description": "new email of local agent",
-                        "required": true
+                        "description": "email of local agent",
+                        "required": false
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "type": "string",
+                        "description": "password of local agent",
+                        "required": false
                     },
                     {
                         "name": "type",
                         "in": "query",
                         "type": "string",
-                        "description": "new type of notifier",
-                        "required": true
+                        "description": "type of notifier",
+                        "required": false
                     }
                 ],
                 "responses": {
@@ -327,18 +355,16 @@
         },
         "/Notifier/Read": {
             "get": {
-              "tags": [
-                  "Notifier"
+                "tags": [
+                    "Notifier"
                 ],
-                "parameters": [
-                    {
-                        "name": "fromuser",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent",
-                        "required": true
-                    }
-                ],
+                "parameters": [{
+                    "name": "fromuser",
+                    "in": "query",
+                    "type": "string",
+                    "description": "email of local agent",
+                    "required": true
+                }],
                 "responses": {
                     "200": {
                         "description": "get list of notifier based on agent email"
@@ -348,18 +374,16 @@
         },
         "/Notifier/Delete": {
             "delete": {
-              "tags": [
-                  "Notifier"
+                "tags": [
+                    "Notifier"
                 ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of notifier",
-                        "required": true
-                    }
-                ],
+                "parameters": [{
+                    "name": "email",
+                    "in": "query",
+                    "type": "string",
+                    "description": "email of notifier",
+                    "required": true
+                }],
                 "responses": {
                     "200": {
                         "description": "notifier email and error"
@@ -369,11 +393,10 @@
         },
         "/SMS": {
             "get": {
-              "tags": [
-                  "Function"
+                "tags": [
+                    "Function"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "tofone",
                         "in": "query",
                         "type": "string",
@@ -397,11 +420,10 @@
         },
         "/Transaction/Checkin": {
             "get": {
-              "tags": [
-                  "Transaction"
+                "tags": [
+                    "Transaction"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "email",
                         "in": "query",
                         "type": "string",
@@ -432,18 +454,16 @@
         },
         "/Transaction/Checkout": {
             "get": {
-              "tags": [
-                  "Transaction"
+                "tags": [
+                    "Transaction"
                 ],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent for creating checkout",
-                        "required": true
-                    }
-                ],
+                "parameters": [{
+                    "name": "email",
+                    "in": "query",
+                    "type": "string",
+                    "description": "email of local agent for creating checkout",
+                    "required": true
+                }],
                 "responses": {
                     "200": {
                         "description": "email and status with checkin string"
@@ -453,11 +473,10 @@
         },
         "/Transaction/Create": {
             "post": {
-              "tags": [
-                  "Transaction"
+                "tags": [
+                    "Transaction"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "fromuser",
                         "in": "query",
                         "type": "string",
@@ -495,11 +514,10 @@
         },
         "/Transaction/Read": {
             "get": {
-              "tags": [
-                  "Transaction"
+                "tags": [
+                    "Transaction"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "fromuser",
                         "in": "query",
                         "type": "string",
@@ -523,11 +541,10 @@
         },
         "/AgentSetting/Create": {
             "post": {
-              "tags": [
-                  "AgentSetting"
+                "tags": [
+                    "AgentSetting"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "agentmail",
                         "in": "query",
                         "type": "string",
@@ -565,11 +582,10 @@
         },
         "/AgentSetting/Update": {
             "put": {
-              "tags": [
-                  "AgentSetting"
+                "tags": [
+                    "AgentSetting"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "agentmail",
                         "in": "query",
                         "type": "string",
@@ -607,18 +623,16 @@
         },
         "/AgentSetting/Read": {
             "get": {
-              "tags": [
-                  "AgentSetting"
+                "tags": [
+                    "AgentSetting"
                 ],
-                "parameters": [
-                    {
-                        "name": "agentemail",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of local agent",
-                        "required": true
-                    }
-                ],
+                "parameters": [{
+                    "name": "agentemail",
+                    "in": "query",
+                    "type": "string",
+                    "description": "email of local agent",
+                    "required": true
+                }],
                 "responses": {
                     "200": {
                         "description": "get agent setting based on agent email"
@@ -628,11 +642,10 @@
         },
         "/NotifierSetting/Create": {
             "post": {
-              "tags": [
-                  "NotifierSetting"
+                "tags": [
+                    "NotifierSetting"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "notifiermail",
                         "in": "query",
                         "type": "string",
@@ -656,11 +669,10 @@
         },
         "/NotifierSetting/Update": {
             "put": {
-              "tags": [
-                  "NotifierSetting"
+                "tags": [
+                    "NotifierSetting"
                 ],
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "notifiermail",
                         "in": "query",
                         "type": "string",
@@ -682,19 +694,18 @@
                 }
             }
         },
-        "/NotifierSetting/Read": {            "get": {
-              "tags": [
-                  "NotifierSetting"
+        "/NotifierSetting/Read": {
+            "get": {
+                "tags": [
+                    "NotifierSetting"
                 ],
-                "parameters": [
-                    {
-                        "name": "notifieremail",
-                        "in": "query",
-                        "type": "string",
-                        "description": "email of notifier",
-                        "required": true
-                    }
-                ],
+                "parameters": [{
+                    "name": "notifieremail",
+                    "in": "query",
+                    "type": "string",
+                    "description": "email of notifier",
+                    "required": true
+                }],
                 "responses": {
                     "200": {
                         "description": "get notifier setting based on notifier email"
