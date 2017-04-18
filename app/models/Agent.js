@@ -9,7 +9,9 @@ var AgentSchema = mongoose.Schema({
     local: {
         email: String,
         password: String,
-        fullname: String,
+        firstname: String,
+        middlename: String,
+        lastname: String
     },
     facebook: {
         id: String,

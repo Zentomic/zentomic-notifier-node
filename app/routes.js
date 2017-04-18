@@ -95,7 +95,9 @@ module.exports = function(app, passport) {
 
         var email = ReqParam(req, 'email');
         var password = ReqParam(req, 'password');
-        var fullname = ReqParam(req, 'fullname');
+        var firstname = ReqParam(req, 'firstname');
+        var middlename = ReqParam(req, 'middlename');
+        var lastname = ReqParam(req, 'lastname');
 
         User.findOne({
                 'local.email': email
@@ -115,7 +117,9 @@ module.exports = function(app, passport) {
 
                         // set the user's local credentials
                         newUser.local.email = email;
-                        newUser.local.fullname = fullname;
+                        newUser.local.firstname = firstname;
+                        newUser.local.middlename = middlename;
+                        newUser.local.lastname = lastname;
                         newUser.local.password = newUser.generateHash(password);
                         newUser.activation.activationKey =newUser.generateHash(email + Math.random());
                         newUser.activation.activated = false;
@@ -151,11 +155,13 @@ module.exports = function(app, passport) {
             data: null
         };
 
-        var email = ReqParam(req, 'email');
+        var email = ReqParam(req, 'email').trim();
         var password = ReqParam(req, 'password');
-        var fullname = ReqParam(req, 'fullname');
+        var firstname = ReqParam(req, 'firstname').trim();
+        var middlename = ReqParam(req, 'middlename').trim();
+        var lastname = ReqParam(req, 'lastname').trim();
         //-------------------------------------------
-        corefunc.Agent().Update(email, fullname, password, function(err, agent) {
+        corefunc.Agent().Update(email, firstname, middlename, lastname, password, function(err, agent) {
             result.err = err;
             result.data = agent;
             res.send(result);
@@ -249,14 +255,17 @@ module.exports = function(app, passport) {
     app.post('/Notifier/Create', function(req, res) {
         console.log('create_notifier');
         var fromuser = ReqParam(req, 'fromuser');
-        var fullname = ReqParam(req, 'fullname');
+        var firstname = ReqParam(req, 'firstname');
+        var middlename = ReqParam(req, 'middlename');
+        var lastname = ReqParam(req, 'lastname');
+
         var fone = ReqParam(req, 'fone');
         var email = ReqParam(req, 'email');
         var type = ReqParam(req, 'type');
 
 
         var $res = res;
-        corefunc.Notifier().Create(fromuser, fullname, fone, email, type, function() {
+        corefunc.Notifier().Create(fromuser, firstname, middlename, lastname, fone, email, type, function() {
             var rs = {
                 email: fromuser,
                 status: 'create notifier'
@@ -347,14 +356,28 @@ module.exports = function(app, passport) {
             var message = "Message from " + email + "[Lat: " + lat + " Long:" + long + "]" + Date();
             console.log(message);
 
+            // read agent
             corefunc.Agent().Read(email, function(err, user){
+              // read agent Setting
+              corefunc.AgentSetting.Read(email, function(err, agentsetting){
+                if(agentsetting)
+                {
+                  message = email ;
+                  message += agentsetting.Setting.Message;
+                  message += "map http://maps.google.com/?q=<lat>,<lng>";
+                  message = message.split("<lat>").join(lat).split("<lng>").join(long);
+                }
 
+                // send SMS
+                corefunc.Notify(email, message, function(resdata) {
+                    console.log(" check in notified to numbers: " + resdata);
+                });
 
+              });// read agent setting
             });// end read agent
-            // send SMS
-            corefunc.Notify(email, message, function(resdata) {
-                console.log(" check in notified to numbers: " + resdata);
-            });
+
+
+
         });
         var rs = {
             email: email,

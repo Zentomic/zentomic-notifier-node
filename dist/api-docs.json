@@ -511,7 +511,7 @@
                         "in": "query",
                         "type": "string",
                         "description": "notifier email",
-                        "required": true
+                        "required": false
                     }
                 ],
                 "responses": {

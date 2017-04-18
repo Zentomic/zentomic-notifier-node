@@ -38,7 +38,7 @@ CoreFunc.prototype.Checkin = function(email, callback, timeout){
 
   //console.log(this.listID);
 
-}
+};
 
 /*
 Check out means delete all timer of this email
@@ -51,7 +51,7 @@ CoreFunc.prototype.Checkout = function(email, callback){
     clearTimeout(idObj);
     delete this.listID[email];
   }
-}
+};
 
 
 /*
@@ -88,7 +88,7 @@ CoreFunc.prototype.Notify = function(fromemail, message, callback){
         }
      });
     //  ----------------------------
-}
+};
 
 // CRUD notifier
 
@@ -175,13 +175,15 @@ CoreFunc.prototype.Agent = function()
         if(callback) callback(err, agent);
       });
     },
-    Update: function(email, fullname, password, callback)
+    Update: function(email, firstname, middlename, lastname, password, callback)
     {
       Agent.findOne(
       { 'local.email' : email },function(err, agent){
         if(err) throw err;
         agent.local.email  = email;
-        agent.local.fullname  = fullname;
+        agent.local.firstname  = firstname;
+        agent.local.middlename  = middlename;
+        agent.local.lastname  = lastname;
         agent.local.password  = agent.generateHash(password);
         agent.save(function(err){
           if(callback) callback(err, agent);
@@ -198,7 +200,7 @@ CoreFunc.prototype.Agent = function()
 
   };
 }
-
+;
 // CRUD AgentSetting
 CoreFunc.prototype.AgentSetting = function()
 {
@@ -269,7 +271,7 @@ CoreFunc.prototype.AgentSetting = function()
 
   };
 }
-
+;
 // CRUD Transaction
 CoreFunc.prototype.Transaction  = function() {
 
@@ -291,8 +293,11 @@ CoreFunc.prototype.Transaction  = function() {
       },
       Read: function(fromuser, touser, callback)
       {
+          var filter = {};
+          filter = !touser?{ 'FromUser' :  fromuser}:{'FromUser' :  fromuser, 'ToUser':touser};
+
           Transaction.find(
-              { 'FromUser' :  fromuser, 'ToUser':touser},
+            filter,
               function(err, transaction) {
                     //custom code here
                   if(err) throw err;
@@ -374,7 +379,7 @@ CoreFunc.prototype.NotifierSetting = function()
 
   };
 }
-
+;
 
 //==============================================================================
 // export module

@@ -38,10 +38,24 @@
                         "required": true
                     },
                     {
-                        "name": "fullname",
+                        "name": "firstname",
                         "in": "query",
                         "type": "string",
-                        "description": "fullname of local user",
+                        "description": "firstname of local user",
+                        "required": true
+                    },
+                    {
+                        "name": "middlename",
+                        "in": "query",
+                        "type": "string",
+                        "description": "middlename of local user",
+                        "required": true
+                    },
+                    {
+                        "name": "lastname",
+                        "in": "query",
+                        "type": "string",
+                        "description": "lastname of local user",
                         "required": true
                     }
                 ],
@@ -132,22 +146,36 @@
                         "name": "email",
                         "in": "query",
                         "type": "string",
-                        "description": "email of local agent",
+                        "description": "email of local user",
                         "required": true
                     },
                     {
                         "name": "password",
                         "in": "query",
                         "type": "string",
-                        "description": "password of local agent",
-                        "required": true
+                        "description": "password of local user",
+                        "required": false
                     },
                     {
-                        "name": "fullname",
+                        "name": "firstname",
                         "in": "query",
                         "type": "string",
-                        "description": "fullname of local agent",
-                        "required": true
+                        "description": "firstname of local user",
+                        "required": false
+                    },
+                    {
+                        "name": "middlename",
+                        "in": "query",
+                        "type": "string",
+                        "description": "middlename of local user",
+                        "required": false
+                    },
+                    {
+                        "name": "lastname",
+                        "in": "query",
+                        "type": "string",
+                        "description": "lastname of local user",
+                        "required": false
                     }
                 ],
                 "responses": {
