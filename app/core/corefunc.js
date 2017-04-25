@@ -146,23 +146,27 @@ CoreFunc.prototype.Notifier  = function() {
             });
           });
         },
-      Read: function(fromuser, callback)
+      Read: async function(fromuser, callback)
       {
-          Notifier.find(
-              { 'FromAgent' :  fromuser},
-              function(err, notifier) {
-                    //custom code here
-                  if(err) throw err;
-                  var rs = {email: fromuser, data: notifier};
-                  if(callback) callback(rs);
-                }
-          );
+        try {
+            let notifier = await Notifier.find({ 'FromAgent' :  fromuser});
+            if(!notifier)
+            {
+              var rs = {email: fromuser, data: notifier};
+              if(callback) callback(rs);
+            }
+          } catch (e) {
+            throw e;
+          }
       },
-      Delete : function (infoemail, callback)
+      Delete : async function (infoemail, callback)
       {
-        Notifier.findOneAndRemove({'Info.Email':infoemail},function(err){
-          if(callback) callback(err);
-        });
+        try {
+          let notifer =await  Notifier.findOneAndRemove({'Info.Email':infoemail});
+          if(callback) callback(notifer);
+        } catch (e) {
+          throw e;
+        }
       },
       Delete_FromAgent : function(agentemail, callback)
       {

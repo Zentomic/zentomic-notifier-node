@@ -247,8 +247,7 @@ module.exports = function(app, passport) {
 
     });
     //-------------------------------------------------------------------------------------------------------------------------------
-    //==================================================This is the twilio section =================================================
-    // this purpose for this is testing twilio on node system
+
     /*
       Create notifier
     */
@@ -261,7 +260,7 @@ module.exports = function(app, passport) {
 
         var fone = ReqParam(req, 'fone');
         var email = ReqParam(req, 'email');
-        var password = ReqParam(req, 'password');
+        var pass = ReqParam(req, 'password');
         var type = ReqParam(req, 'type');
 
 
@@ -299,17 +298,13 @@ module.exports = function(app, passport) {
         };
 
         var oldemail = ReqParam(req, 'oldemail');
-        var firstname = ReqParam(req, 'firstname');
-        var middlename = ReqParam(req, 'middlename');
-        var lastname = ReqParam(req, 'lastname');
-
-        var fone = ReqParam(req, 'fone');
         var email = ReqParam(req, 'email');
-        var password = ReqParam(req, 'password');
+        var fullname = ReqParam(req, 'fullname');
+        var fone = ReqParam(req, 'fone');
         var type = ReqParam(req, 'type');
 
         //-------------------------------------------
-        corefunc.Notifier().Update(oldemail, firstname, middlename, lastname, fone, email, password,  type, function(err, notifier) {
+        corefunc.Notifier().Update(oldemail, fullname, fone, email, type, function(err, notifier) {
             result.err = err;
             result.data = notifier;
             res.send(result);
@@ -332,7 +327,7 @@ module.exports = function(app, passport) {
 
     });
 
-    //-------------------------------
+    //-----------------------------------------------------------------------------------
     app.get('/SMS', function(req, res) {
         var tofone = ReqParam(req, 'tofone');
         var message = ReqParam(req, 'message');
