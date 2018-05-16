@@ -10,6 +10,10 @@ var Notifier       = require('../models/notifier');
 var NotifierSetting       = require('../models/NotifierSetting');
 var Transaction       = require('../models/transaction');
 var SMS        = require('../twilioClient');
+var User      = require('../models/user');
+var Business  = require('../models/business');
+var Check     = require('../models/check');
+
 //===========================================================================================================
 //===========================================================================================================
 //===========================================================================================================
