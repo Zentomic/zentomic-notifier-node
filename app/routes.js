@@ -2,9 +2,11 @@
 var User = require('../app/models/Agent');
 var Notifier = require('../app/models/notifier');
 var SMS = require('../app/twilioClient');
+var VoiceCall = require('../app/twilioCall');
 var ReqParam = require('../config/ReqParam');
 var CoreFunc = require('../app/core/corefunc.js');
 var Mailer = require('../app/core/mail.js');
+var PushToken = require('../app/models/pushToken');
 
 var corefunc = new CoreFunc();
 
@@ -342,6 +344,19 @@ module.exports = function(app, passport) {
             //----------------------------
         }
     });
+
+    app.get('/VoiceCall', function(req, res) {
+        var to = '';
+        var message = '';
+        VoiceCall.sendCall(to, message, function (err, data) {
+            var resdata = {
+                err: err,
+                data: data
+            };
+            res.send(resdata); // for responding on web
+        });
+    });
+
     // check in check out funciton
     app.get('/Transaction/Checkin', function(req, res) {
         console.log('check in');
@@ -529,6 +544,23 @@ module.exports = function(app, passport) {
             res.send(result);
         });
     });
+
+    /* ********************************************************************
+     *
+     *      Push Tokens - Routes
+     * 
+     * ******************************************************************** 
+     */ 
+    app.post('/PushToken/Create', function(req, res) {
+        let userId = ReqParam(req, 'userId');
+        let pushToken = ReqParam(req, 'pushToken');
+
+        corefunc.PushToken().Create(userId, pushToken, (result) => {
+            res.send(result);
+        });
+    });
+
+
 };
 
 // route middleware to make sure a user is logged in
