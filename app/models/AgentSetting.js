@@ -8,7 +8,7 @@ var AgentSettingSchema = mongoose.Schema({
     AgentEmail : String,  // agent id
     Setting        : {
       Duration      : Number, // duration for notifie
-      Radius        : Number,
+      Radius        : Number, 
       Message       : String, // message for sending to notifier
       Type          : String // sms or mms
     }

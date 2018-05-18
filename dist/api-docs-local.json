@@ -864,6 +864,137 @@
                     "type": "string"
                 }
             }
+        },
+        "/User/Read": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "agent infor"
+                    }
+                }
+            }
+        },
+        "/User/Update": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent",
+                        "required": true
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "type": "string",
+                        "description": "password of local agent",
+                        "required": true
+                    },
+                    {
+                        "name": "fullname",
+                        "in": "query",
+                        "type": "string",
+                        "description": "fullname of local agent",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "err as well as agent infor"
+                    }
+                }
+            }
+        },
+        "/User/Delete": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent to be deleted",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "agent email and error"
+                    }
+                }
+            }
+        },
+        "/User/ResendActivationLink": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent to be deleted",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "agent email and error"
+                    }
+                }
+            }
+        },
+        "/User/Activate": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "agentemail",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent to be deleted",
+                        "required": true
+                    },
+                    {
+                        "name": "activationkey",
+                        "in": "query",
+                        "type": "string",
+                        "description": "activationkey",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "agent email and error"
+                    }
+                }
+            }
         }
+
+
+
+
+
     }
 }

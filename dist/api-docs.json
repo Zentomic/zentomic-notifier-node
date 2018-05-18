@@ -7,7 +7,10 @@
     },
     "host": "api.realsafe.io",
     "basePath": "",
-    "schemes": ["https", "https"],
+    "schemes": [
+        "https",
+        "https"
+    ],
     "consumes": [
         "application/json",
         "text/xml"
@@ -22,7 +25,8 @@
                 "tags": [
                     "Agent"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "email",
                         "in": "query",
                         "type": "string",
@@ -56,7 +60,8 @@
                 "tags": [
                     "Auth"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "email",
                         "in": "query",
                         "type": "string",
@@ -83,13 +88,15 @@
                 "tags": [
                     "Auth"
                 ],
-                "parameters": [{
-                    "name": "code",
-                    "in": "query",
-                    "type": "string",
-                    "description": "code from google plus auth service",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "type": "string",
+                        "description": "code from google plus auth service",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "login with local account"
@@ -102,13 +109,15 @@
                 "tags": [
                     "Agent"
                 ],
-                "parameters": [{
-                    "name": "email",
-                    "in": "query",
-                    "type": "string",
-                    "description": "email of local agent",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "agent infor"
@@ -121,7 +130,8 @@
                 "tags": [
                     "Agent"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "email",
                         "in": "query",
                         "type": "string",
@@ -155,13 +165,15 @@
                 "tags": [
                     "Agent"
                 ],
-                "parameters": [{
-                    "name": "email",
-                    "in": "query",
-                    "type": "string",
-                    "description": "email of local agent to be deleted",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent to be deleted",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "agent email and error"
@@ -174,13 +186,15 @@
                 "tags": [
                     "Agent"
                 ],
-                "parameters": [{
-                    "name": "email",
-                    "in": "query",
-                    "type": "string",
-                    "description": "email of local agent to be deleted",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent to be deleted",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "agent email and error"
@@ -193,7 +207,8 @@
                 "tags": [
                     "Agent"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "agentemail",
                         "in": "query",
                         "type": "string",
@@ -220,7 +235,8 @@
                 "tags": [
                     "Notifier"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "fromuser",
                         "in": "query",
                         "type": "string",
@@ -289,7 +305,8 @@
                 "tags": [
                     "Notifier"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "oldemail",
                         "in": "query",
                         "type": "string",
@@ -358,13 +375,15 @@
                 "tags": [
                     "Notifier"
                 ],
-                "parameters": [{
-                    "name": "fromuser",
-                    "in": "query",
-                    "type": "string",
-                    "description": "email of local agent",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "name": "fromuser",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "get list of notifier based on agent email"
@@ -377,13 +396,15 @@
                 "tags": [
                     "Notifier"
                 ],
-                "parameters": [{
-                    "name": "email",
-                    "in": "query",
-                    "type": "string",
-                    "description": "email of notifier",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of notifier",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "notifier email and error"
@@ -396,7 +417,8 @@
                 "tags": [
                     "Function"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "tofone",
                         "in": "query",
                         "type": "string",
@@ -423,7 +445,8 @@
                 "tags": [
                     "Transaction"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "email",
                         "in": "query",
                         "type": "string",
@@ -457,13 +480,15 @@
                 "tags": [
                     "Transaction"
                 ],
-                "parameters": [{
-                    "name": "email",
-                    "in": "query",
-                    "type": "string",
-                    "description": "email of local agent for creating checkout",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent for creating checkout",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "email and status with checkin string"
@@ -476,7 +501,8 @@
                 "tags": [
                     "Transaction"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "fromuser",
                         "in": "query",
                         "type": "string",
@@ -517,7 +543,8 @@
                 "tags": [
                     "Transaction"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "fromuser",
                         "in": "query",
                         "type": "string",
@@ -544,7 +571,8 @@
                 "tags": [
                     "AgentSetting"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "agentmail",
                         "in": "query",
                         "type": "string",
@@ -585,7 +613,8 @@
                 "tags": [
                     "AgentSetting"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "agentmail",
                         "in": "query",
                         "type": "string",
@@ -626,13 +655,15 @@
                 "tags": [
                     "AgentSetting"
                 ],
-                "parameters": [{
-                    "name": "agentemail",
-                    "in": "query",
-                    "type": "string",
-                    "description": "email of local agent",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "name": "agentemail",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "get agent setting based on agent email"
@@ -645,7 +676,8 @@
                 "tags": [
                     "NotifierSetting"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "notifiermail",
                         "in": "query",
                         "type": "string",
@@ -672,7 +704,8 @@
                 "tags": [
                     "NotifierSetting"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "notifiermail",
                         "in": "query",
                         "type": "string",
@@ -699,13 +732,15 @@
                 "tags": [
                     "NotifierSetting"
                 ],
-                "parameters": [{
-                    "name": "notifieremail",
-                    "in": "query",
-                    "type": "string",
-                    "description": "email of notifier",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "name": "notifieremail",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of notifier",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "get notifier setting based on notifier email"
@@ -713,7 +748,6 @@
                 }
             }
         }
-
     },
     "definitions": {
         "Agent": {
@@ -778,6 +812,143 @@
                 },
                 "google": {
                     "type": "string"
+                }
+            }
+        },
+        "PushToken": {
+            "type": "object",
+            "properties": {
+                "userId": {
+                    "type": "string"
+                },
+                "pushToken": {
+                    "type": "string"
+                }
+            }
+        },
+        "/Agent/Create": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local user",
+                        "required": true
+                    },
+                    {
+                        "name": "fullname",
+                        "in": "query",
+                        "type": "string",
+                        "description": "fullname of local user",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "signup/create a local account"
+                    }
+                }
+            }
+        },
+        "/User/Read": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local user",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user info"
+                    }
+                }
+            }
+        },
+        "/User/Update": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent",
+                        "required": true
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "type": "string",
+                        "description": "password of local agent",
+                        "required": true
+                    },
+                    {
+                        "name": "fullname",
+                        "in": "query",
+                        "type": "string",
+                        "description": "fullname of local agent",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "err as well as user info"
+                    }
+                }
+            }
+        },
+        "/User/Delete": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local user to be deleted",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user email and error"
+                    }
+                }
+            }
+        },
+        "/User/ResendActivationLink": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "type": "string",
+                        "description": "email of local agent to be deleted",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "agent email and error"
+                    }
                 }
             }
         }

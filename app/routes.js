@@ -7,15 +7,16 @@ var ReqParam = require('../config/ReqParam');
 var CoreFunc = require('../app/core/corefunc.js');
 var Mailer = require('../app/core/mail.js');
 var PushToken = require('../app/models/pushToken');
+var newUser = require('../app/models/user');
 
 var corefunc = new CoreFunc();
 
-module.exports = function(app, passport) {
+module.exports = function (app, passport) {
 
     /* =====================================
     // HOME PAGE (with login links) ========
     // =====================================*/
-    app.get('/', function(req, res) {
+    app.get('/', function (req, res) {
         res.render('index.ejs'); // load the index.ejs file
     });
 
@@ -24,8 +25,8 @@ module.exports = function(app, passport) {
     /*
       Login local
     */
-    app.get('/Auth/Local', function(req, res, next) {
-        passport.authenticate('local-login', function(err, user, info) {
+    app.get('/Auth/Local', function (req, res, next) {
+        passport.authenticate('local-login', function (err, user, info) {
             if (err) {
                 return next(err);
             }
@@ -36,7 +37,7 @@ module.exports = function(app, passport) {
                 };
                 return res.send(rs);
             }
-            req.logIn(user, function(err) {
+            req.logIn(user, function (err) {
                 if (err) {
                     return next(err);
                 }
@@ -55,7 +56,7 @@ module.exports = function(app, passport) {
         })(req, res, next);
     });
 
-    app.get('/Auth/Google', passport.authenticate('google'), function(req, res) {
+    app.get('/Auth/Google', passport.authenticate('google'), function (req, res) {
         console.log(" google router calback");
         var rs = {
             'login': true,
@@ -71,7 +72,7 @@ module.exports = function(app, passport) {
     /*
       Get Agent
     */
-    app.get('/Agent/Read', function(req, res) {
+    app.get('/Agent/Read', function (req, res) {
         var result = {
             err: null,
             data: null
@@ -79,7 +80,7 @@ module.exports = function(app, passport) {
 
         var email = ReqParam(req, 'email');
         //-------------------------------------------
-        corefunc.Agent().Read(email, function(err, agent) {
+        corefunc.Agent().Read(email, function (err, agent) {
             result.err = err;
             result.data = agent;
             res.send(result);
@@ -88,7 +89,7 @@ module.exports = function(app, passport) {
     /*
       create agent
     */
-    app.post('/Agent/Create', function(req, res) {
+    app.post('/Agent/Create', function (req, res) {
 
         var result = {
             err: null,
@@ -102,9 +103,9 @@ module.exports = function(app, passport) {
         var lastname = ReqParam(req, 'lastname');
 
         User.findOne({
-                'local.email': email
-            },
-            function(err, user) {
+            'local.email': email
+        },
+            function (err, user) {
                 //custom code here
                 // if there are any errors, return the error
                 if (!err) {
@@ -123,17 +124,17 @@ module.exports = function(app, passport) {
                         newUser.local.middlename = middlename;
                         newUser.local.lastname = lastname;
                         newUser.local.password = newUser.generateHash(password);
-                        newUser.activation.activationKey =newUser.generateHash(email + Math.random());
+                        newUser.activation.activationKey = newUser.generateHash(email + Math.random());
                         newUser.activation.activated = false;
                         // save the user
-                        newUser.save(function(err) {
+                        newUser.save(function (err) {
                             if (err) throw err;
                             result.data = newUser;
                             //-------------------------------------
                             // send email with links
                             //(to, subject, activationKey, html)
                             var sender = new Mailer();
-                            sender.Send(email, "Zentomic Activate Mail", newUser.activation.activationKey, "<p>Zentomic</p>" );
+                            sender.Send(email, "Zentomic Activate Mail", newUser.activation.activationKey, "<p>Zentomic</p>");
                         });
                     }
                 } else result.err = err;
@@ -141,17 +142,13 @@ module.exports = function(app, passport) {
                 res.send(result);
                 // responed;
             }
-
-
         );
-
-
 
     });
     /*
       Update Agent
     */
-    app.put('/Agent/Update', function(req, res) {
+    app.put('/Agent/Update', function (req, res) {
         var result = {
             err: null,
             data: null
@@ -163,7 +160,7 @@ module.exports = function(app, passport) {
         var middlename = ReqParam(req, 'middlename').trim();
         var lastname = ReqParam(req, 'lastname').trim();
         //-------------------------------------------
-        corefunc.Agent().Update(email, firstname, middlename, lastname, password, function(err, agent) {
+        corefunc.Agent().Update(email, firstname, middlename, lastname, password, function (err, agent) {
             result.err = err;
             result.data = agent;
             res.send(result);
@@ -172,10 +169,10 @@ module.exports = function(app, passport) {
     /*
       Delete Agent
     */
-    app.delete('/Agent/Delete', function(req, res) {
+    app.delete('/Agent/Delete', function (req, res) {
         var localemail = ReqParam(req, "email");
         console.log(localemail);
-        corefunc.Agent().Delete(localemail, function(err) {
+        corefunc.Agent().Delete(localemail, function (err) {
             var resdata = {
                 email: localemail,
                 error: err
@@ -185,7 +182,7 @@ module.exports = function(app, passport) {
     });
 
     /*Send ResendActivationLink*/
-    app.post('/Agent/ResendActivationLink', function(req, res) {
+    app.post('/Agent/ResendActivationLink', function (req, res) {
         var result = {
             err: null,
             data: null
@@ -193,31 +190,30 @@ module.exports = function(app, passport) {
 
         var email = ReqParam(req, 'email');
 
-        corefunc.Agent().Read(email, function(err, user){
-          //-------------------------------------------
-          if(user.activation)
-          {
-            user.activation.activationKey = user.generateHash(email + Math.random());
-            user.activation.activated = false;
-          }
+        corefunc.Agent().Read(email, function (err, user) {
+            //-------------------------------------------
+            if (user.activation) {
+                user.activation.activationKey = user.generateHash(email + Math.random());
+                user.activation.activated = false;
+            }
 
-          // save the user
-          user.save(function(err) {
-              if (err) throw err;
-              result.data = user;
-              //-------------------------------------
-              // send email with links
-              //(to, subject, activationKey, html)
-              var sender = new Mailer();
-              sender.Send(email, "Zentomic Activate Mail", user.activation.activationKey, "<p>Zentomic</p>" );
-              res.send(result);
-          });
+            // save the user
+            user.save(function (err) {
+                if (err) throw err;
+                result.data = user;
+                //-------------------------------------
+                // send email with links
+                //(to, subject, activationKey, html)
+                var sender = new Mailer();
+                sender.Send(email, "Zentomic Activate Mail", user.activation.activationKey, "<p>Zentomic</p>");
+                res.send(result);
+            });
         });
 
     });
 
     /*Send ResendActivationLink*/
-    app.get('/Agent/Activate', function(req, res) {
+    app.get('/Agent/Activate', function (req, res) {
         var result = {
             err: null,
             data: null
@@ -226,25 +222,24 @@ module.exports = function(app, passport) {
         var agentemail = ReqParam(req, 'agentemail');
         var activationkey = ReqParam(req, 'activationkey');
 
-        corefunc.Agent().Read(agentemail, function(err, user){
-          //-------------------------------------------
-          if (err) throw err;
-          if(user.isVerified(activationkey))
-          {
-            result.err = true;
-            result.data = {message:"is verified", user: user};
-            res.send(result);
-          }
-          else {
-            user.activation.activated = true;
-            // save the user
-            user.save(function(err) {
-                if (err) throw err;
-                result.data = {message: "activated", user: user};
-                //-------------------------------------
+        corefunc.Agent().Read(agentemail, function (err, user) {
+            //-------------------------------------------
+            if (err) throw err;
+            if (user.isVerified(activationkey)) {
+                result.err = true;
+                result.data = { message: "is verified", user: user };
                 res.send(result);
-            });
-          }
+            }
+            else {
+                user.activation.activated = true;
+                // save the user
+                user.save(function (err) {
+                    if (err) throw err;
+                    result.data = { message: "activated", user: user };
+                    //-------------------------------------
+                    res.send(result);
+                });
+            }
         });
 
     });
@@ -253,7 +248,7 @@ module.exports = function(app, passport) {
     /*
       Create notifier
     */
-    app.post('/Notifier/Create', function(req, res) {
+    app.post('/Notifier/Create', function (req, res) {
         console.log('create_notifier');
         var fromuser = ReqParam(req, 'fromuser');
         var firstname = ReqParam(req, 'firstname');
@@ -267,7 +262,7 @@ module.exports = function(app, passport) {
 
 
         var $res = res;
-        corefunc.Notifier().Create(fromuser, firstname, middlename, lastname, fone, email, password, type, function() {
+        corefunc.Notifier().Create(fromuser, firstname, middlename, lastname, fone, email, password, type, function () {
             var rs = {
                 email: fromuser,
                 status: 'create notifier'
@@ -281,19 +276,19 @@ module.exports = function(app, passport) {
     /*
       Get Notifier
     */
-    app.get('/Notifier/Read', function(req, res) {
+    app.get('/Notifier/Read', function (req, res) {
 
         var fromuser = ReqParam(req, "fromuser");
 
         console.log(fromuser);
-        corefunc.Notifier().Read(fromuser, function(rs) {
+        corefunc.Notifier().Read(fromuser, function (rs) {
             res.send(rs);
         });
     });
     /*
       Update Agent
     */
-    app.put('/Notifier/Update', function(req, res) {
+    app.put('/Notifier/Update', function (req, res) {
         var result = {
             err: null,
             data: null
@@ -306,7 +301,7 @@ module.exports = function(app, passport) {
         var type = ReqParam(req, 'type');
 
         //-------------------------------------------
-        corefunc.Notifier().Update(oldemail, fullname, fone, email, type, function(err, notifier) {
+        corefunc.Notifier().Update(oldemail, fullname, fone, email, type, function (err, notifier) {
             result.err = err;
             result.data = notifier;
             res.send(result);
@@ -315,11 +310,11 @@ module.exports = function(app, passport) {
     /*
       Delete Notifier
     */
-    app.delete('/Notifier/Delete', function(req, res) {
+    app.delete('/Notifier/Delete', function (req, res) {
 
         var infoemail = ReqParam(req, "email");
         console.log(infoemail);
-        corefunc.Notifier().Delete(infoemail, function(err) {
+        corefunc.Notifier().Delete(infoemail, function (err) {
             var resdata = {
                 email: infoemail,
                 error: err
@@ -330,11 +325,11 @@ module.exports = function(app, passport) {
     });
 
     //-----------------------------------------------------------------------------------
-    app.get('/SMS', function(req, res) {
+    app.get('/SMS', function (req, res) {
         var tofone = ReqParam(req, 'tofone');
         var message = ReqParam(req, 'message');
         if (tofone) {
-            SMS.sendSms(tofone, message, function(err, data) {
+            SMS.sendSms(tofone, message, function (err, data) {
                 var resdata = {
                     err: err,
                     data: data
@@ -345,7 +340,7 @@ module.exports = function(app, passport) {
         }
     });
 
-    app.get('/VoiceCall', function(req, res) {
+    app.get('/VoiceCall', function (req, res) {
         var to = '';
         var message = '';
         VoiceCall.sendCall(to, message, function (err, data) {
@@ -358,7 +353,7 @@ module.exports = function(app, passport) {
     });
 
     // check in check out funciton
-    app.get('/Transaction/Checkin', function(req, res) {
+    app.get('/Transaction/Checkin', function (req, res) {
         console.log('check in');
         var email = ReqParam(req, 'email');
         var lat = ReqParam(req, 'lat');
@@ -366,29 +361,28 @@ module.exports = function(app, passport) {
         var customerinfo = ReqParam(req, 'customerinfo');
         // auth here if need
 
-        corefunc.Checkin(email, function(idobj) {
+        corefunc.Checkin(email, function (idobj) {
             // get message from database here
             var message = "Message from " + email + "[Lat: " + lat + " Long:" + long + "]" + Date();
             console.log(message);
 
             // read agent
-            corefunc.Agent().Read(email, function(err, user){
-              // read agent Setting
-              corefunc.AgentSetting.Read(email, function(err, agentsetting){
-                if(agentsetting)
-                {
-                  message = email ;
-                  message += agentsetting.Setting.Message;
-                  message += "map http://maps.google.com/?q=<lat>,<lng>";
-                  message = message.split("<lat>").join(lat).split("<lng>").join(long);
-                }
+            corefunc.Agent().Read(email, function (err, user) {
+                // read agent Setting
+                corefunc.AgentSetting.Read(email, function (err, agentsetting) {
+                    if (agentsetting) {
+                        message = email;
+                        message += agentsetting.Setting.Message;
+                        message += "map http://maps.google.com/?q=<lat>,<lng>";
+                        message = message.split("<lat>").join(lat).split("<lng>").join(long);
+                    }
 
-                // send SMS
-                corefunc.Notify(email, message, function(resdata) {
-                    console.log(" check in notified to numbers: " + resdata);
-                });
+                    // send SMS
+                    corefunc.Notify(email, message, function (resdata) {
+                        console.log(" check in notified to numbers: " + resdata);
+                    });
 
-              });// read agent setting
+                });// read agent setting
             });// end read agent
 
 
@@ -403,10 +397,10 @@ module.exports = function(app, passport) {
     /*
     check out
     */
-    app.get('/Transaction/Checkout', function(req, res) {
+    app.get('/Transaction/Checkout', function (req, res) {
         console.log('');
         var email = ReqParam(req, 'email');
-        corefunc.Checkout(email, function() {
+        corefunc.Checkout(email, function () {
             console.log(" check out callback " + email);
 
         });
@@ -417,22 +411,22 @@ module.exports = function(app, passport) {
         res.send(rs);
     });
     /* Transaction read */
-    app.get('/Transaction/Read', function(req, res) {
+    app.get('/Transaction/Read', function (req, res) {
         var fromuser = ReqParam(req, "fromuser");
         var touser = ReqParam(req, "touser");
-        corefunc.Transaction().Read(fromuser, touser, function(rs) {
+        corefunc.Transaction().Read(fromuser, touser, function (rs) {
             res.send(rs);
         });
     });
     /* Transaction Create */
-    app.post('/Transaction/Create', function(req, res) {
+    app.post('/Transaction/Create', function (req, res) {
         console.log('create_notifier');
         var fromuser = ReqParam(req, 'fromuser');
         var touser = ReqParam(req, 'touser');
         var message = ReqParam(req, 'message');
         var atdatetime = ReqParam(req, 'atdatetime');
         var $res = res;
-        corefunc.Transaction().Create(fromuser, touser, message, atdatetime, function() {
+        corefunc.Transaction().Create(fromuser, touser, message, atdatetime, function () {
             var rs = {
                 email: fromuser,
                 status: 'create Transaction'
@@ -445,7 +439,7 @@ module.exports = function(app, passport) {
     /*
       Get AgentSetting
     */
-    app.get('/AgentSetting/Read', function(req, res) {
+    app.get('/AgentSetting/Read', function (req, res) {
         var result = {
             err: null,
             data: null
@@ -453,7 +447,7 @@ module.exports = function(app, passport) {
 
         var email = ReqParam(req, 'agentemail');
         //-------------------------------------------
-        corefunc.AgentSetting().Read(email, function(err, agentsetting) {
+        corefunc.AgentSetting().Read(email, function (err, agentsetting) {
             result.err = err;
             result.data = agentsetting;
             res.send(result);
@@ -462,21 +456,21 @@ module.exports = function(app, passport) {
     /*
       create AgentSetting
     */
-    app.post('/AgentSetting/Create', function(req, res) {
+    app.post('/AgentSetting/Create', function (req, res) {
 
         var agentmail = ReqParam(req, 'agentmail');
         var duration = ReqParam(req, 'duration');
         var message = ReqParam(req, 'message');
         var type = ReqParam(req, 'type');
         // create agent Setting
-        corefunc.AgentSetting().Create(agentmail, duration, message, type, function(result) {
+        corefunc.AgentSetting().Create(agentmail, duration, message, type, function (result) {
             res.send(result);
         });
     });
     /*
       Update Agent
     */
-    app.put('/AgentSetting/Update', function(req, res) {
+    app.put('/AgentSetting/Update', function (req, res) {
         var result = {
             err: null,
             data: null
@@ -487,7 +481,7 @@ module.exports = function(app, passport) {
         var message = ReqParam(req, 'message');
         var type = ReqParam(req, 'type');
         //-------------------------------------------
-        corefunc.AgentSetting().Update(agentmail, duration, message, type, function(err, agentsetting) {
+        corefunc.AgentSetting().Update(agentmail, duration, message, type, function (err, agentsetting) {
             result.err = err;
             result.data = agentsetting;
             res.send(result);
@@ -498,7 +492,7 @@ module.exports = function(app, passport) {
     /*
       Get NotifierSetting
     */
-    app.get('/NotifierSetting/Read', function(req, res) {
+    app.get('/NotifierSetting/Read', function (req, res) {
         var result = {
             err: null,
             data: null
@@ -506,7 +500,7 @@ module.exports = function(app, passport) {
 
         var email = ReqParam(req, 'notifieremail');
         //-------------------------------------------
-        corefunc.NotifierSetting().Read(email, function(err, notifiersetting) {
+        corefunc.NotifierSetting().Read(email, function (err, notifiersetting) {
             result.err = err;
             result.data = notifiersetting;
             res.send(result);
@@ -515,20 +509,20 @@ module.exports = function(app, passport) {
     /*
       create NotifierSetting
     */
-    app.post('/NotifierSetting/Create', function(req, res) {
+    app.post('/NotifierSetting/Create', function (req, res) {
 
         var notifiermail = ReqParam(req, 'notifiermail');
         var enablemms = ReqParam(req, 'enablemms');
 
         // create notifier Setting
-        corefunc.NotifierSetting().Create(notifiermail, enablemms, function(result) {
+        corefunc.NotifierSetting().Create(notifiermail, enablemms, function (result) {
             res.send(result);
         });
     });
     /*
       Update Notifier
     */
-    app.put('/NotifierSetting/Update', function(req, res) {
+    app.put('/NotifierSetting/Update', function (req, res) {
         var result = {
             err: null,
             data: null
@@ -538,7 +532,7 @@ module.exports = function(app, passport) {
         var enablemms = ReqParam(req, 'enablemms');
 
         //-------------------------------------------
-        corefunc.NotifierSetting().Update(notifiermail, enablemms, function(err, notifiersetting) {
+        corefunc.NotifierSetting().Update(notifiermail, enablemms, function (err, notifiersetting) {
             result.err = err;
             result.data = notifiersetting;
             res.send(result);
@@ -550,8 +544,8 @@ module.exports = function(app, passport) {
      *      Push Tokens - Routes
      * 
      * ******************************************************************** 
-     */ 
-    app.post('/PushToken/Create', function(req, res) {
+     */
+    app.post('/PushToken/Create', function (req, res) {
         let userId = ReqParam(req, 'userId');
         let pushToken = ReqParam(req, 'pushToken');
 
@@ -559,6 +553,190 @@ module.exports = function(app, passport) {
             res.send(result);
         });
     });
+
+    /*
+      Get User
+    */
+    app.get('/User/Read', function (req, res) {
+        var result = {
+            err: null,
+            data: null
+        };
+
+        var email = ReqParam(req, 'email');
+        //-------------------------------------------
+        corefunc.User().Read(email, function (err, user) {
+            result.err = err;
+            result.data = user;
+            res.send(result);
+        });
+    });
+    /*
+      create User
+    */
+    app.post('/User/Create', function (req, res) {
+
+        var result = {
+            err: null,
+            data: null
+        };
+
+        var email = ReqParam(req, 'email').trim();
+        var firstname = ReqParam(req, 'firstname').trim();
+        var middlename = ReqParam(req, 'middlename').trim();
+        var lastname = ReqParam(req, 'lastname').trim();
+        var paid = ReqParam(req, 'paid').trim();
+        var enddate = ReqParam(req, 'enddate').trim();
+        var passcode = ReqParam(req, 'passcode').trim();
+        var distresscode = ReqParam(req, 'distresscode').trim();
+        var isNotifier = ReqParam(req, 'isNotifier').trim();
+
+        User.findOne({
+            'local.email': email
+        },
+            function (err, user) {
+                //custom code here
+                // if there are any errors, return the error
+                if (!err) {
+                    // check to see if theres already a user with that email
+                    if (user) {
+                        result.data = "email already registered " + user;
+                    } else {
+
+                        // if there is no user with that email
+                        // create the user
+                        var newUser = new User();
+
+                        // set the user's local credentials
+                        newUser.local.email = email;
+                        newUser.local.firstname = firstname;
+                        newUser.local.middlename = middlename;
+                        newUser.local.lastname = lastname;
+                        newUser.local.password = newUser.generateHash(password);
+                        newUser.activation.activationKey = newUser.generateHash(email + Math.random());
+                        newUser.activation.activated = false;
+                        // save the user
+                        newUser.save(function (err) {
+                            if (err) throw err;
+                            result.data = newUser;
+                            //-------------------------------------
+                            // send email with links
+                            //(to, subject, activationKey, html)
+                            var sender = new Mailer();
+                            sender.Send(email, "Zentomic Activate Mail", newUser.activation.activationKey, "<p>Zentomic</p>");
+                        });
+                    }
+                } else result.err = err;
+
+                res.send(result);
+                // responed;
+            }
+        );
+    });
+    /*
+      Update Agent
+    */
+    app.put('/User/Update', function (req, res) {
+        var result = {
+            err: null,
+            data: null
+        };
+
+        var email = ReqParam(req, 'email').trim();
+        var firstname = ReqParam(req, 'firstname').trim();
+        var middlename = ReqParam(req, 'middlename').trim();
+        var lastname = ReqParam(req, 'lastname').trim();
+        var paid = ReqParam(req, 'paid').trim();
+        var enddate = ReqParam(req, 'enddate').trim();
+        var passcode = ReqParam(req, 'passcode').trim();
+        var distresscode = ReqParam(req, 'distresscode').trim();
+        var isNotifier = ReqParam(req, 'isNotifier').trim();
+        //-------------------------------------------
+        corefunc.User().Update(email, firstname, middlename, lastname, password, function (err, agent) {
+            result.err = err;
+            result.data = agent;
+            res.send(result);
+        });
+    });
+    /*
+      Delete Agent
+    */
+    app.delete('/User/Delete', function (req, res) {
+        var localemail = ReqParam(req, "email");
+        console.log(localemail);
+        corefunc.User().Delete(localemail, function (err) {
+            var resdata = {
+                email: localemail,
+                error: err
+            };
+            res.send(resdata);
+        });
+    });
+
+    /*Send ResendActivationLink*/
+    app.post('/User/ResendActivationLink', function (req, res) {
+        var result = {
+            err: null,
+            data: null
+        };
+
+        var email = ReqParam(req, 'email');
+
+        corefunc.User().Read(email, function (err, newUser) {
+            //-------------------------------------------
+            if (newUser.activation) {
+                newUser.activation.activationKey = newUser.generateHash(email + Math.random());
+                newUser.activation.activated = false;
+            }
+
+            // save the user
+            user.save(function (err) {
+                if (err) throw err;
+                result.data = user;
+                //-------------------------------------
+                // send email with links
+                //(to, subject, activationKey, html)
+                var sender = new Mailer();
+                sender.Send(email, "Zentomic Activate Mail", newUser.activation.activationKey, "<p>Zentomic</p>");
+                res.send(result);
+            });
+        });
+
+    });
+
+    /*Send ResendActivationLink*/
+    app.get('/User/Activate', function (req, res) {
+        var result = {
+            err: null,
+            data: null
+        };
+
+        var agentemail = ReqParam(req, 'agentemail');
+        var activationkey = ReqParam(req, 'activationkey');
+
+        corefunc.User().Read(agentemail, function (err, newUser) {
+            //-------------------------------------------
+            if (err) throw err;
+            if (newUser.isVerified(activationkey)) {
+                result.err = true;
+                result.data = { message: "is verified", user: newUser };
+                res.send(result);
+            }
+            else {
+                newUser.activation.activated = true;
+                // save the user
+                newUser.save(function (err) {
+                    if (err) throw err;
+                    result.data = { message: "activated", user: newUser };
+                    //-------------------------------------
+                    res.send(result);
+                });
+            }
+        });
+
+    });
+    //-------------------------------------------------------------------------------------------------------------------------------
+
 
 
 };
